@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekaman</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            padding: 20px;
+        }
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .recording {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            padding: 15px;
+        }
+        .recording .title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .recording .details {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .images img {
+            width: 100%;
+            max-width: 200px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .images img:hover {
+            transform: scale(1.05);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+        .modal.show {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Rekaman</div>
+        <p>sabeum maaf ini rekaman yang semalem saya rekaman dari dalam ke luar. Maaf juga sabeum agak berisik di rekaman karena motor lewat😁</p>
+
+        <div class="recording">
+            <div class="title">3 Des 20.13</div>
+            <div class="details">00:00/14:25 • 03/12/24</div>
+            <audio controls class="audio-player">
+                <source src="3_Des_20.13.mp3" type="audio/mpeg">
+                Browser Anda tidak mendukung audio.
+            </audio>
+        </div>
+
+      <h2>Baju Jersnya</h2>
+      <p>sabeum ini baju jers yang sabeum supri dan sabeum teksa bawah kasih untuk bapa</p>
+        <div class="images">
+            <img src="Depan.jpg" alt="Gambar 1" class="zoomable">
+            <img src="Belakang.jpg" alt="Gambar 2" class="zoomable">
+        </div>
+
+        <div class="modal" id="imageModal">
+            <img id="modalImage" src="" alt="Zoomed Image">
+        </div>
+    </div>
+    <script>
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const zoomableImages = document.querySelectorAll('.zoomable');
+
+        zoomableImages.forEach(image => {
+            image.addEventListener('click', () => {
+                modalImage.src = image.src;
+                modal.classList.add('show');
+            });
+        });
+
+        modal.addEventListener('click', () => {
+            modal.classList.remove('show');
+        });
+    </script>
+</body>
+</html>
