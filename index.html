@@ -188,13 +188,21 @@
   </head>
   <body>
     <script>
+// Fungsi untuk memeriksa apakah perangkat yang digunakan adalah perangkat mobile
       function isMobileDevice() {
         return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       }
 
+      // Menampilkan pesan peringatan jika bukan perangkat mobile
       if (!isMobileDevice()) {
-        alert('Halaman ini hanya dapat diakses melalui perangkat mobile.');
-        document.body.innerHTML = '<h1>Halaman tidak didukung di perangkat desktop.</h1>';
+        document.body.innerHTML = `
+          <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f4;">
+            <div style="text-align: center; padding: 20px; background-color: #e74c3c; color: white; border-radius: 10px;">
+              <h1>Halaman ini hanya dapat diakses melalui perangkat mobile.</h1>
+              <p>Silakan buka halaman ini di perangkat mobile Anda untuk melanjutkan.</p>
+            </div>
+          </div>
+        `;
       }
     </script>
 
@@ -223,18 +231,20 @@
 
         if (!document.fullscreenElement) {
           element.requestFullscreen();
-          button.innerText = "Normal Screen";
+          button.innerHTML = "&#x1F533;";
+          button.title = "Normal Screen";
           button.classList.add("normal");
         } else {
           document.exitFullscreen();
-          button.innerText = "Fullscreen";
+          button.innerHTML = "&#x1F532;";
+          button.title = "Normal Screen";
           button.classList.remove("normal");
         }
       }
     </script>
 
     <div class="Halaman-Login" id="loginPage">
-      <button class="fullscreen-btn" id="fullscreenToggle" onclick="toggleFullscreen()">Fullscreen</button>
+      <button class="fullscreen-btn" id="fullscreenToggle" onclick="toggleFullscreen()">&#x1F532;</button>
       <div class="ketik">
         <h1 class="tulisan">Login</h1>
         <form onsubmit="login(); return false;">
@@ -254,7 +264,7 @@
     <script>
       function login() {
         if (!document.fullscreenElement) {
-          alert("Anda harus masuk ke mode fullscreen untuk melanjutkan!");
+          alert("Anda harus masuk ke mode 🔲 untuk melanjutkan!");
           return;
         }
 
