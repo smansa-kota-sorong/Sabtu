@@ -1,121 +1,330 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="id">
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rekaman</title>
+    <title>Halaman Login</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-        }
-        .container {
-            padding: 20px;
-        }
-        .header {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .recording {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin-bottom: 15px;
-            padding: 15px;
-        }
-        .recording .title {
-            font-size: 16px;
-            font-weight: bold;
-        }
-        .recording .details {
-            font-size: 14px;
-            color: #6c757d;
-            margin-top: 5px;
-        }
-        audio {
-            width: 100%;
-            margin-top: 10px;
-        }
-        .images {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .images img {
-            width: 100%;
-            max-width: 200px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        .images img:hover {
-            transform: scale(1.05);
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-        }
-        .modal img {
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 10px;
-        }
-        .modal.show {
-            display: flex;
-        }
+      body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+      }
+
+      .video-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #fafafa;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10;
+      }
+
+      video {
+        width: 100%;
+        height: auto;
+      }
+
+      .Halaman-Login {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #2c3e50;
+        position: relative;
+      }
+
+      .ketik {
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .ketik .tulisan {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #2c3e50;
+      }
+
+      .papan {
+        margin-bottom: 15px;
+        text-align: left;
+      }
+
+      .papan label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #2c3e50;
+      }
+
+      .papan input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      .Masuk-hal {
+        display: inline-block;
+        background-color: #3498db;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .Masuk-hal:hover {
+        background-color: #2980b9;
+      }
+
+      /* Tombol Fullscreen */
+      .fullscreen-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 10px;
+        font-size: 14px;
+        color: #fff;
+        background-color: #e74c3c;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+      }
+
+      .fullscreen-btn:hover {
+        background-color: #c0392b;
+      }
+
+      .fullscreen-btn.normal {
+        background-color: #2ecc71;
+      }
+
+      .fullscreen-btn.normal:hover {
+        background-color: #27ae60;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .header {
+        background-color: #2c3e50;
+        padding: 15px 20px;
+        color: #fff;
+        text-align: center;
+        border-bottom: 4px solid #2980b9;
+      }
+
+      .navbar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 10px;
+      }
+
+      .nav-link {
+        margin: 10px 5px;
+        color: #fff;
+        font-size: 14px;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 5px;
+        background-color: #3498db;
+        transition: background-color 0.3s;
+        text-align: center;
+      }
+
+      .nav-link:hover {
+        background-color: #2980b9;
+      }
+
+      .main {
+        padding: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .section {
+        display: none;
+      }
+
+      .section.active {
+        display: block;
+      }
+
+      .logout-btn {
+        display: inline-block;
+        margin-top: 20px;
+        background-color: #e74c3c;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .logout-btn:hover {
+        background-color: #c0392b;
+      }
     </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">Rekaman</div>
-        <p>sabeum maaf ini rekaman yang semalem saya rekaman dari dalam ke luar. Maaf juga sabeum agak berisik di rekaman karena motor lewat😁</p>
-
-        <div class="recording">
-            <div class="title">3 Des 20.13</div>
-            <div class="details">00:00/14:25 • 03/12/24</div>
-            <audio controls class="audio-player">
-                <source src="3_Des_20.13.mp3" type="audio/mpeg">
-                Browser Anda tidak mendukung audio.
-            </audio>
-        </div>
-
-      <h2>Baju Jersnya</h2>
-      <p>sabeum ini baju jers yang sabeum supri dan sabeum teksa bawah kasih untuk bapa</p>
-        <div class="images">
-            <img src="Depan.jpg" alt="Gambar 1" class="zoomable">
-            <img src="Belakang.jpg" alt="Gambar 2" class="zoomable">
-        </div>
-
-        <div class="modal" id="imageModal">
-            <img id="modalImage" src="" alt="Zoomed Image">
-        </div>
-    </div>
+  </head>
+  <body>
     <script>
-        const modal = document.getElementById('imageModal');
-        const modalImage = document.getElementById('modalImage');
-        const zoomableImages = document.querySelectorAll('.zoomable');
+      function isMobileDevice() {
+        return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      }
 
-        zoomableImages.forEach(image => {
-            image.addEventListener('click', () => {
-                modalImage.src = image.src;
-                modal.classList.add('show');
-            });
-        });
-
-        modal.addEventListener('click', () => {
-            modal.classList.remove('show');
-        });
+      if (!isMobileDevice()) {
+        alert('Halaman ini hanya dapat diakses melalui perangkat mobile.');
+        document.body.innerHTML = '<h1>Halaman tidak didukung di perangkat desktop.</h1>';
+      }
     </script>
-</body>
+
+    <div class="video-container">
+      <video id="introVideo" autoplay muted playsinline>
+        <source src="Mm.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <script>
+      const video = document.getElementById('introVideo');
+      const loginPage = document.getElementById('loginPage');
+      const videoContainer = document.querySelector('.video-container');
+
+      // Menampilkan halaman login setelah video selesai
+      video.onended = function () {
+        videoContainer.style.display = 'none'; // Sembunyikan video
+        loginPage.classList.add('active'); // Tampilkan halaman login
+      };
+    </script>
+
+    <script>
+      function toggleFullscreen() {
+        const element = document.documentElement;
+        const button = document.getElementById("fullscreenToggle");
+
+        if (!document.fullscreenElement) {
+          element.requestFullscreen();
+          button.innerText = "Normal Screen";
+          button.classList.add("normal");
+        } else {
+          document.exitFullscreen();
+          button.innerText = "Fullscreen";
+          button.classList.remove("normal");
+        }
+      }
+    </script>
+
+    <div class="Halaman-Login" id="loginPage">
+      <button class="fullscreen-btn" id="fullscreenToggle" onclick="toggleFullscreen()">Fullscreen</button>
+      <div class="ketik">
+        <h1 class="tulisan">Login</h1>
+        <form onsubmit="login(); return false;">
+          <div class="papan">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Enter your username" required>
+          </div>
+          <div class="papan">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password" required>
+          </div>
+          <button type="submit" class="Masuk-hal" id="loginBtn">Masuk</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      function login() {
+        if (!document.fullscreenElement) {
+          alert("Anda harus masuk ke mode fullscreen untuk melanjutkan!");
+          return;
+        }
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        if (username === 'KOSUM PAITI' && password === '01') {
+          document.getElementById('loginPage').classList.add('hidden');
+          document.getElementById('homePage').classList.remove('hidden');
+          navigate('home');
+        } else {
+          alert("Username atau Password salah!");
+        }
+      }
+    </script>
+
+    <script>
+      // Navigasi antar halaman
+      function navigate(pageId) {
+        const sections = document.querySelectorAll('.section');
+        sections.forEach(section => section.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+      }
+
+      // Fungsi Logout
+      function logout() {
+        document.getElementById('homePage').classList.add('hidden');
+        document.getElementById('loginPage').classList.remove('hidden');
+      }
+    </script>
+
+    <div class="hidden" id="homePage">
+      <header class="header">
+        <h1 class="title">Aplikasi XI A2</h1>
+        <nav class="navbar">
+          <a href="javascript:void(0)" onclick="navigate('home')" class="nav-link">Home</a>
+          <a href="javascript:void(0)" onclick="navigate('piket')" class="nav-link">Piket</a>
+          <a href="javascript:void(0)" onclick="navigate('jadwal')" class="nav-link">Jadwal</a>
+          <a href="javascript:void(0)" onclick="navigate('denah')" class="nav-link">Denah</a>
+          <a href="javascript:void(0)" onclick="navigate('struktur')" class="nav-link">Struktur</a>
+          <a href="javascript:void(0)" onclick="navigate('settings')" class="nav-link">Setting</a>
+        </nav>
+      </header>
+      <main class="main">
+        <section id="home" class="section active">
+          <h2>Selamat Datang</h2>
+          <p>Ini adalah halaman utama aplikasi sekolah Anda. Gunakan menu di atas untuk mengakses fitur lainnya.</p>
+        </section>
+        <section id="piket" class="section">
+          <h2>Halaman Piket</h2>
+          <p>Ini adalah halaman untuk melihat daftar piket.</p>
+        </section>
+        <section id="jadwal" class="section">
+          <h2>Halaman Jadwal</h2>
+          <p>Ini adalah halaman untuk melihat jadwal pelajaran.</p>
+        </section>
+        <section id="denah" class="section">
+          <h2>Halaman Denah</h2>
+          <p>Ini adalah halaman denah kelas.</p>
+        </section>
+        <section id="struktur" class="section">
+          <h2>Halaman Struktur</h2>
+          <p>Ini adalah halaman struktur organisasi kelas.</p>
+        </section>
+        <section id="settings" class="section">
+          <h2>Halaman Setting</h2>
+          <p>Ini adalah halaman pengaturan aplikasi.</p>
+          <button class="logout-btn" onclick="logout()">Logout</button>
+        </section>
+      </main>
+    </div>
+  </body>
 </html>
