@@ -4,257 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halaman Login</title>
-    <style>
-      body, html {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        font-family: Arial, sans-serif;
-      }
-
-      .animasi-video {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #7fbdfc;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 10;
-      }
-
-      video {
-        width: 100%;
-        height: auto;
-      }
-
-      .Halaman-Login {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #7fbdfc;
-        position: relative;
-      }
-
-      .ketik {
-        background: #fff;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        width: 100%;
-        max-width: 400px;
-      }
-
-      .ketik .tulisan {
-        margin-bottom: 20px;
-        font-size: 24px;
-        color: #2c3e50;
-      }
-
-      .papan {
-        margin-bottom: 15px;
-        text-align: left;
-      }
-
-      .papan label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
-        color: #2c3e50;
-      }
-
-      .papan input {
-        width: 95%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-      }
-
-      .Masuk-hal {
-        display: inline-block;
-        background-color: #3498db;
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-      }
-
-      .Masuk-hal:hover {
-        background-color: #2980b9;
-      }
-
-      .fullscreen-btn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        padding: 10px;
-        font-size: 14px;
-        color: #fff;
-        background-color: #e74c3c;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        z-index: 1000;
-      }
-
-      .fullscreen-btn:hover {
-        background-color: #c0392b;
-      }
-
-      .fullscreen-btn.normal {
-        background-color: #2ecc71;
-      }
-
-      .fullscreen-btn.normal:hover {
-        background-color: #27ae60;
-      }
-
-      .hidden {
-        display: none;
-      }
-
-      .header {
-        background-color: #2c3e50;
-        padding: 15px 20px;
-        color: #fff;
-        text-align: center;
-        border-bottom: 4px solid #2980b9;
-      }
-
-      .navbar {
-        display: flex;
-        overflow-x: auto;
-        gap: 10px;
-        padding: 10px;
-        background-color: #2c3e50;
-        scrollbar-width: thin;
-        scrollbar-color: #3498db transparent;
-        }
-
-      .navbar::-webkit-scrollbar {
-        height: 8px;
-        }
-
-      .navbar::-webkit-scrollbar-thumb {
-        background: #3498db;
-        border-radius: 5px;
-        }
-
-      .nav-link {
-        flex-shrink: 0;
-        padding: 10px 15px;
-        color: #fff;
-        font-size: 14px;
-        text-decoration: none;
-        font-weight: bold;
-        background-color: #3498db;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-        text-align: center;
-      }
-
-      .nav-link:hover {
-        background-color: #2980b9;
-      }
-
-      .main {
-        padding: 20px;
-        max-width: 800px;
-        margin: 0 auto;
-      }
-
-      .section {
-        display: none;
-      }
-
-      .section.active {
-        display: block;
-      }
-
-      .logout-btn {
-        display: inline-block;
-        margin-top: 20px;
-        background-color: #e74c3c;
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-      }
-
-      .logout-btn:hover {
-        background-color: #c0392b;
-      }
-    </style>
+    <link rel="stylesheet" href="CSS/1.css">
+    <link rel="stylesheet" href="CSS/2.css">
+    <link rel="stylesheet" href="CSS/3.css">
+    <link rel="stylesheet" href="CSS/4.css">
   </head>
   <body>
-    <script>
-// Fungsi untuk memeriksa apakah perangkat yang digunakan adalah perangkat mobile
-      function isMobileDevice() {
-        return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      }
-
-      // Menampilkan pesan peringatan jika bukan perangkat mobile
-      if (!isMobileDevice()) {
-        document.body.innerHTML = `
-          <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #7fbdfc;">
-            <div style="text-align: center; padding: 20px; background-color: #e74c3c; color: white; border-radius: 10px;">
-              <h1>Halaman ini hanya dapat diakses melalui perangkat mobile.</h1>
-              <p>Silakan buka halaman ini di perangkat mobile Anda untuk melanjutkan.</p>
-            </div>
-          </div>
-        `;
-      }
-    </script>
-
-    <div class="animasi-video">
+    <div class="animasi-video" id="videoPage">
       <video id="introVideo" autoplay muted playsinline preload="none" oncontextmenu="return false;" controlsList="nodownload">
-        <source src="Animasi.mp4" type="video/mp4">
+      <source src="Animasi.mp4" type="video/mp4">
       </video>
     </div>
-
-    <script>
-      const video = document.getElementById('introVideo');
-      const loginPage = document.getElementById('loginPage');
-      const videoContainer = document.querySelector('.animasi-video');
-
-      // Menampilkan halaman login setelah video selesai
-      video.onended = function () {
-        videoContainer.style.display = 'none'; // Sembunyikan video
-        loginPage.classList.add('active'); // Tampilkan halaman login
-      };
-    </script>
-
-    <script>
-      function toggleFullscreen() {
-        const element = document.documentElement;
-        const button = document.getElementById("fullscreenToggle");
-
-        if (!document.fullscreenElement) {
-          element.requestFullscreen();
-          button.innerHTML = "&#x1F533;";
-          button.title = "Normal Screen";
-          button.classList.add("normal");
-        } else {
-          document.exitFullscreen();
-          button.innerHTML = "&#x1F532;";
-          button.title = "Normal Screen";
-          button.classList.remove("normal");
-        }
-      }
-    </script>
-
-    <div class="Halaman-Login" id="loginPage">
+    <div class="Halaman-Login hidden" id="loginPage">
       <button class="fullscreen-btn" id="fullscreenToggle" onclick="toggleFullscreen()">&#x1F532;</button>
       <div class="ketik">
         <h1 class="tulisan">Login</h1>
@@ -271,47 +32,12 @@
         </form>
       </div>
     </div>
-
-    <script>
-      function login() {
-        if (!document.fullscreenElement) {
-          alert("Anda harus masuk ke mode 🔲 untuk melanjutkan!");
-          return;
-        }
-
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-
-        if (username === 'KOSUM PAITI' && password === '01') {
-          document.getElementById('loginPage').classList.add('hidden');
-          document.getElementById('homePage').classList.remove('hidden');
-          navigate('home');
-        } else {
-          alert("Username atau Password salah!");
-        }
-      }
-    </script>
-
-    <script>
-        function navigate(pageId) {
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => section.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-        }
-
-      // Fungsi Logout
-      function logout() {
-        document.getElementById('homePage').classList.add('hidden');
-        document.getElementById('loginPage').classList.remove('hidden');
-      }
-    </script>
-
     <div class="hidden" id="homePage">
       <header class="header">
         <h1 class="title">Aplikasi XI A2</h1>
         <nav class="navbar">
           <a href="javascript:void(0)" onclick="navigate('home')" class="nav-link">Home</a>
-          <a href="javascript:void(0)" onclick="navigate('piket')" class="nav-link">Piket</a>
+          <a href="javascript:void(0)" onclick="navigate('Foto')" class="nav-link">Foto</a>
           <a href="javascript:void(0)" onclick="navigate('jadwal')" class="nav-link">Jadwal</a>
           <a href="javascript:void(0)" onclick="navigate('denah')" class="nav-link">Denah</a>
           <a href="javascript:void(0)" onclick="navigate('struktur')" class="nav-link">Struktur</a>
@@ -323,7 +49,7 @@
           <h2>Selamat Datang</h2>
           <p>Ini adalah halaman utama aplikasi sekolah Anda. Gunakan menu di atas untuk mengakses fitur lainnya.</p>
         </section>
-        <section id="piket" class="section">
+        <section id="Foto" class="section">
           <h2>Halaman Piket</h2>
           <p>Ini adalah halaman untuk melihat daftar piket.</p>
         </section>
@@ -346,5 +72,10 @@
         </section>
       </main>
     </div>
+    <script src="Javascript/192.168.0.1.js"></script>
+    <script src="Javascript/192.168.0.2.js"></script>
+    <script src="Javascript/192.168.0.3.js"></script>
+    <script src="Javascript/192.168.0.4.js"></script>
+    <script src="Javascript/192.168.0.5.js"></script>
   </body>
 </html>
