@@ -1,85 +1,74 @@
-    .Halaman-Login {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #7fbdfc;
-      position: relative;
-    }
-
-    .ketik {
-      background: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      text-align: center;
-      width: 100%;
-      max-width: 400px;
-    }
-
-    .ketik .tulisan {
-      margin-bottom: 20px;
-      font-size: 24px;
-      color: #2c3e50;
-    }
-
-    .papan {
-      margin-bottom: 15px;
-      text-align: left;
-    }
-
-    .papan label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 5px;
-      color: #2c3e50;
-    }
-
-    .papan input {
-      width: 95%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-
-    .Masuk-hal {
-      display: inline-block;
-      background-color: #3498db;
-      color: #fff;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .Masuk-hal:hover {
-      background-color: #2980b9;
-    }
-
-    .fullscreen-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      padding: 10px;
-      font-size: 14px;
-      color: #fff;
-      background-color: #e74c3c;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      z-index: 1000;
-    }
-
-    .fullscreen-btn:hover {
-      background-color: #c0392b;
-    }
-
-    .fullscreen-btn.normal {
-      background-color: #2ecc71;
-    }
-
-    .fullscreen-btn.normal:hover {
-      background-color: #27ae60;
-    }
+.Halaman-Login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #7fbdfc;
+  position: relative;
+}
+.ketik {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+.ketik .tulisan {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #2c3e50;
+}
+.papan {
+  margin-bottom: 15px;
+  text-align: left;
+}
+.papan label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #2c3e50;
+}
+.papan input {
+  width: 95%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.Masuk-hal {
+  display: inline-block;
+  background-color: #3498db;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.Masuk-hal:hover {
+  background-color: #2980b9;
+}
+.fullscreen-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 10px;
+  font-size: 14px;
+  color: #fff;
+  background-color: #e74c3c;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1000;
+}
+.fullscreen-btn:hover {
+  background-color: #c0392b;
+}
+.fullscreen-btn.normal {
+  background-color: #2ecc71;
+}
+.fullscreen-btn.normal:hover {
+  background-color: #27ae60;
+}
