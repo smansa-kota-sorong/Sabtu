@@ -1,671 +1,202 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Login</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Galeri Foto Responsif</title>
     <style>
-body, html {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-}
-
-.animasi-video {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #7fbdfc;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
-}
-video {
-  width: 100%;
-  height: auto;
-}
-
-.Halaman-Login {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #7fbdfc;
-  position: relative;
-}
-.ketik {
-  background: #fff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  width: 100%;
-  max-width: 400px;
-}
-.ketik .tulisan {
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #2c3e50;
-}
-.papan {
-  margin-bottom: 15px;
-  position: relative;
-  text-align: left;
-}
-.papan label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: #2c3e50;
-}
-.papan input {
-  width: 95%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-}
-.Masuk-hal {
-  display: inline-block;
-  background-color: #3498db;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-.Masuk-hal:hover {
-  background-color: #2980b9;
-}
-#togglePassword {
-  position: absolute;
-  top: 65%;
-  right: 14px;
-  transform: translateY(-40%);
-  cursor: pointer;
-  color: #555;
-}
-.fullscreen-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 10px;
-  font-size: 14px;
-  color: #fff;
-  background-color: #e74c3c;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  z-index: 1000;
-}
-.fullscreen-btn:hover {
-  background-color: #c0392b;
-}
-.fullscreen-btn.normal {
-  background-color: #2ecc71;
-}
-.fullscreen-btn.normal:hover {
-  background-color: #27ae60;
-}
-
-.hidden {
-  display: none;
-}
-.header {
-  background-color: #2c3e50;
-  padding: 15px 20px;
-  color: #fff;
-  text-align: center;
-  border-bottom: 4px solid #2980b9;
-}
-.title {
-  font-size: 18px;
-  color: #fff;
-}
-.navbar {
-  display: flex;
-  overflow-x: auto;
-  gap: 10px;
-  padding: 10px;
-  background-color: #2c3e50;
-  scrollbar-width: thin;
-  scrollbar-color: #3498db transparent;
-}
-.navbar::-webkit-scrollbar {
-  height: 9px;
-}
-.navbar::-webkit-scrollbar-thumb {
-  background: #3498db;
-  border-radius: 10px;
-}
-.nav-link {
-  flex-shrink: 0;
-  padding: 7px 12px;
-  color: #fff;
-  font-size: 10px;
-  text-decoration: none;
-  font-weight: bold;
-  background-color: #3498db;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-  text-align: center;
-}
-.nav-link:hover {
-  background-color: #fff;
-  color: #3498db;
-}
-.main {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-.section {
-  display: none;
-}
-.section.active {
-  display: block;
-}
-.logout-btn {
-  display: inline-block;
-  margin-top: 20px;
-  background-color: #e74c3c;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-.logout-btn:hover {
-  background-color: #c0392b;
-}
-
-.profile-container {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border: 2px solid #ffffff;
-}
-.profile-container video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 8px;
-  margin-top: 10px;
-  position: relative;
-  z-index: 1;
-}
-th, td {
-  border: 1px solid black;
-  padding: 6px;
-  text-align: center;
-}
-
-    </style>
-  </head>
-  <body>
-    <div class="animasi-video" id="videoPage">
-      <video id="introVideo" autoplay muted playsinline preload="none" oncontextmenu="return false;" controlsList="nodownload">
-      <source src="Animasi.mp4" type="video/mp4">
-      </video>
-    </div>
-    <div class="Halaman-Login hidden" id="loginPage">
-      <div class="profile-container">
-        <video autoplay muted loop oncontextmenu="return false;">
-          <source src="Animasi.mp4" type="video/mp4">
-        </video>
-      </div>
-      <button class="fullscreen-btn" id="fullscreenToggle" onclick="toggleFullscreen()">&#x1F532;</button>
-      <div class="ketik">
-        <h1 class="tulisan">Login</h1>
-        <form onsubmit="login(); return false;">
-          <div class="papan">
-            <label for="username">Username</label>
-            <input type="text" id="username" placeholder="Enter your username" required>
-          </div>
-          <div class="papan">
-            <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Enter your password" required>
-            <span class="material-icons toggle-password" id="togglePassword">visibility</span>
-          </div>
-          <button type="submit" class="Masuk-hal" id="loginBtn">Masuk</button>
-        </form>
-      </div>
-    </div>
-    <div class="hidden" id="Admin">
-      <header class="header">
-        <h1 class="title">Aplikasi XI A2</h1>
-        <nav class="navbar">
-          <a href="javascript:void(0)" onclick="navigate('home')" class="nav-link">Home</a>
-          <a href="javascript:void(0)" onclick="navigate('Dokumentasi')" class="nav-link">Dokumentasi</a>
-          <a href="javascript:void(0)" onclick="navigate('Data-Nama')" class="nav-link">Data Nama</a>
-          <a href="javascript:void(0)" onclick="navigate('upload-dokumentasi')" class="nav-link">upload dokumentasi</a>
-          <a href="javascript:void(0)" onclick="navigate('upload-data-nama')" class="nav-link">Upload Data Nama</a>
-          <a href="javascript:void(0)" onclick="navigate('settings')" class="nav-link">Setting</a>
-        </nav>
-      </header>
-      <main class="main">
-        <section id="home" class="section active">
-          <h2>Selamat Datang</h2>
-          <p>Ini adalah halaman utama aplikasi sekolah Anda. Gunakan menu di atas untuk mengakses fitur lainnya.</p>
-        </section>
-        <section id="Dokumentasi" class="section">
-          <h2>Halaman Piket</h2>
-          <p>Ini adalah halaman untuk melihat daftar piket.</p>
-        </section>
-        <section id="Data-Nama" class="section">
-        <style>
-          .table-one {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 8px;
-            margin-top: 10px;
-            position: relative;
-            z-index: 1;
-          }
-          .table-one th, .table-one td {
-            border: 10px solid black;
-            padding: 6px;
+        body {
+            font-family: Arial, sans-serif;
             text-align: center;
-          }
-        </style>
-        <h2>Data Nama</h2>
-        <table class="table-one">
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Nama</th>
-              <th>Kelas</th>
-              <th>Jenis Kelamin</th>
-              <th>Nomor HP</th>
-              <th>Tanggal Input</th>
-            </tr>
-            </thead>
-            <tbody id="tabelDataname">
-            <!-- Data akan ditambahkan di sini -->
-          </tbody>
-        </table>
-        <script>
-          function loadData() {
-            const data = JSON.parse(localStorage.getItem("dataSiswa")) || [];
-            const tabelData = document.getElementById("tabelDataname");
-
-            tabelData.innerHTML = "";
-
-            data.forEach((item, index) => {
-              const row = document.createElement("tr");
-              row.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${item.nama}</td>
-                <td>${item.kelas}</td>
-                <td>${item.jenisKelamin}</td>
-                <td>${item.nomorHp}</td>
-                <td>${item.tanggalInput}</td>
-              `;
-              tabelData.appendChild(row);
-            });
-          }
-
-          loadData();
-        </script>
-        </section>
-        <section id="upload-dokumentasi" class="section">
-          <style>
-        .btn-outline {
-            display: inline-flex;
-            align-items: center;
-            padding: 4px 4px;
-            border: 1px solid #007bff;
-            color: #007bff;
-            border-radius: 8px;
-            background-color: transparent;
-            font-size: 9px;
-            cursor: pointer;
-            transition: all 0.3s;
+            margin: 20px;
         }
-
-        .btn-outline:hover {
-            background-color: #007bff;
+        h1 {
+            margin-bottom: 20px;
+        }
+        .gallery {
+            display: grid;
+            gap: 15px;
+            justify-content: center;
+        }
+        /* Default untuk layar besar (5 kotak per baris) */
+        .gallery {
+            grid-template-columns: repeat(5, 1fr);
+        }
+        /* Tablet (4 kotak per baris) */
+        @media (max-width: 1024px) {
+            .gallery {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        /* Ponsel (2 kotak per baris) */
+        @media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .photo-container {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .photo-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* Rasio 16:9 */
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .photo-wrapper img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .date {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #555;
+        }
+        .buttons {
+            margin-top: 10px;
+        }
+        button {
+            padding: 8px 12px;
+            margin: 3px;
+            font-size: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-open {
+            background-color: #4CAF50;
             color: white;
         }
-
-        .btn-outline svg {
-            margin-right: 2px;
+        .btn-download {
+            background-color: #008CBA;
+            color: white;
         }
-          
-            .trash-button {
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-              width: 20px;
-              height: 20px;
-              background-color: #ff4d4d;
-              border: none;
-              border-radius: 50%;
-              cursor: pointer;
-              box-shadow: 0 4px 6px rgba(0, 0, 0, .0);
-              transition: transform 0.2s, background-color 0.2s;
+        button:hover {
+            opacity: 0.8;
+        }
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+            touch-action: pan-x pan-y; /* Memungkinkan zoom dengan pinch */
+        }
+        .modal .close-btn {
+            display: none;
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+        }
+        @media (min-width: 1025px) {
+            .modal .close-btn {
+                display: block;
             }
-           .trash-button:hover {
-              background-color: #e60000;
-              transform: scale(1.1);
-            }
-            .trash-button:active {
-              transform: scale(1);
-            }
-            .trash-button .material-icons {
-              font-size: 9px;
-              color: white;
-            }
-          </style>
-          <h2>Halaman Denah</h2>
-          <p>Ini adalah halaman denah kelas.</p>
-        </section>
-        <section id="upload-data-nama" class="section">
-          <h2>Halaman Struktur</h2>
-          <div id="tambahNama">
-            <h1>Tambah Data</h1>
-            <form id="formData">
-              <label for="nama">Nama:</label>
-              <input type="text" id="nama" name="nama" required>
-              <br><br>
-              <label for="kelas">Kelas:</label>
-              <input type="text" id="kelas" name="kelas" required>
-              <br><br>
-              <label for="jenisKelamin">Jenis Kelamin:</label>
-              <select id="jenisKelamin" name="jenisKelamin" required>
-                <option value="Laki-laki">Laki-laki</option>
-                <option value="Perempuan">Perempuan</option>
-              </select>
-              <br><br>
+        }
+    </style>
+</head>
+<body>
+    <h1>Galeri Foto Taekwondo</h1>
+    <div class="gallery">
+        <!-- Foto 1 -->
+        <div class="photo-container">
+            <div class="photo-wrapper">
+                <img src="foto1.jpg" alt="Matematika" id="foto1">
+            </div>
+            <div class="date">Hal 144</div>
+            <div class="buttons">
+                <button class="btn-open" onclick="bukaFoto('foto1.jpg')">Buka</button>
+                <button class="btn-download" onclick="downloadFoto('foto1.jpg')">Download</button>
+            </div>
+        </div>
+        <div class="photo-container">
+            <div class="photo-wrapper">
+                <img src="foto2.jpg" alt="Matematika" id="foto1">
+            </div>
+            <div class="date">Hal 144</div>
+            <div class="buttons">
+                <button class="btn-open" onclick="bukaFoto('foto2.jpg')">Buka</button>
+                <button class="btn-download" onclick="downloadFoto('foto2.jpg')">Download</button>
+            </div>
+        </div>
+        <div class="photo-container">
+            <div class="photo-wrapper">
+                <img src="foto3.jpg" alt="Matematika" id="foto1">
+            </div>
+            <div class="date">Hal 145</div>
+            <div class="buttons">
+                <button class="btn-open" onclick="bukaFoto('foto3.jpg')">Buka</button>
+                <button class="btn-download" onclick="downloadFoto('foto3.jpg')">Download</button>
+            </div>
+        </div>
+        <!-- Tambahkan foto lainnya di sini -->
+    </div>
 
-        <label for="nomorHp">Nomor HP:</label>
-        <input type="text" id="nomorHp" name="nomorHp" required>
-        <br><br>
-
-        <button type="submit">Simpan</button>
-    </form>
-
-    <button onclick="lihatData()">Lihat Data</button>
-  </div>
-  <div id="lihatData" class="hidden">
-    <h1>Edit Data Siswa</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>Kelas</th>
-                <th>Jenis Kelamin</th>
-                <th>Nomor HP</th>
-                <th>Aksi</th>
-                <th>Hapus</th> <!-- Kolom untuk tombol hapus -->
-            </tr>
-        </thead>
-        <tbody id="tabelData">
-            <!-- Data akan ditambahkan di sini -->
-        </tbody>
-    </table>
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <span class="close-btn" onclick="tutupModal()">×</span>
+        <img id="modalImg" src="" alt="Gambar Asli">
+    </div>
 
     <script>
-        function loadData() {
-            const data = JSON.parse(localStorage.getItem("dataSiswa")) || [];
-            const tabelData = document.getElementById("tabelData");
+        let klikCount = 0;
+        let timeout;
 
-            tabelData.innerHTML = "";
+        function bukaFoto(src) {
+            const modal = document.getElementById('modal');
+            const modalImg = document.getElementById('modalImg');
+            modalImg.src = src;
+            modal.style.display = 'flex';
 
-            data.forEach((item, index) => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${item.nama}</td>
-                    <td>${item.kelas}</td>
-                    <td>${item.jenisKelamin}</td>
-                    <td>${item.nomorHp}</td>
-                    <td>
-                        <a class="btn-outline" onclick="editData(${index})"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-            <path d="M12.146.854a.5.5 0 0 1 .708 0l2.292 2.292a.5.5 0 0 1 0 .708l-8.5 8.5A.5.5 0 0 1 6.5 12H4a.5.5 0 0 1-.5-.5v-2.5a.5.5 0 0 1 .146-.354l8.5-8.5zm1.061 1.768L10.5 5.329 11.671 6.5l2.707-2.707-1.171-1.171zM10.5 7.671 9.329 6.5 3.5 12.329V13h.671L10.5 7.671z"/>
-        </svg></a>
-                    </td>
-                    <td>
-                        <button class="trash-button" onclick="hapusData(${index})">
-                        <span class="material-icons">delete</span>
-                        </button>
-                    </td>
-                `;
-                tabelData.appendChild(row);
-            });
-        }
-
-        function hapusData(index) {
-            if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
-                const data = JSON.parse(localStorage.getItem("dataSiswa")) || [];
-                data.splice(index, 1); // Menghapus data pada index yang dipilih
-                localStorage.setItem("dataSiswa", JSON.stringify(data));
-                loadData(); // Memuat ulang data yang sudah terupdate
-                alert("Data berhasil dihapus.");
+            // Atur perilaku khusus untuk ponsel/tablet
+            if (window.innerWidth <= 1024) {
+                modal.onclick = function () {
+                    klikCount++;
+                    if (klikCount === 2) {
+                        tutupModal();
+                        klikCount = 0;
+                    }
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => (klikCount = 0), 300);
+                };
             }
         }
 
-        loadData();
+        function tutupModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'none';
+        }
+
+        function downloadFoto(src) {
+            const link = document.createElement('a');
+            link.href = src;
+            link.download = src.split('/').pop();
+            link.click();
+        }
     </script>
-    <script>
-        document.getElementById("formData").addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            const nama = document.getElementById("nama").value;
-            const kelas = document.getElementById("kelas").value;
-            const jenisKelamin = document.getElementById("jenisKelamin").value;
-            const nomorHp = document.getElementById("nomorHp").value;
-            const tanggalInput = new Date().toLocaleDateString();
-
-            const data = JSON.parse(localStorage.getItem("dataSiswa")) || [];
-            data.push({ nama, kelas, jenisKelamin, nomorHp, tanggalInput });
-
-            localStorage.setItem("dataSiswa", JSON.stringify(data));
-
-            alert("Data berhasil disimpan!");
-            document.getElementById("formData").reset();
-        });
-
-        function lihatData() {
-  document.getElementById('tambahNama').classList.add('hidden');
-  document.getElementById('lihatData').classList.remove('hidden');
-}
-
-function lihatData() {
-  document.getElementById('tambahNama').classList.add('hidden');
-  document.getElementById('lihatData').classList.remove('hidden');
-}
-
-function editData(index) {
-  document.getElementById('tambahNama').classList.add('hidden');
-  document.getElementById('lihatData').classList.remove('hidden');
-}
-    </script>
-  </div>
-    
-  </section>
-        <section id="settings" class="section">
-          <button class="logout-btn" onclick="logout()">Logout</button>
-        </section>
-      </main>
-    </div>
-    <div class="hidden" id="gurupage">
-      <header class="header">
-        <h1 class="title">Aplikasi XI A2</h1>
-        <nav class="navbar">
-          <a href="javascript:void(0)" onclick="navigate('home')" class="nav-link">Home</a>
-          <a href="javascript:void(0)" onclick="navigate('Foto')" class="nav-link">Foto</a>
-          <a href="javascript:void(0)" onclick="navigate('jadwal')" class="nav-link">Jadwal</a>
-          <a href="javascript:void(0)" onclick="navigate('denah')" class="nav-link">Denah</a>
-          <a href="javascript:void(0)" onclick="navigate('struktur')" class="nav-link">Struktur</a>
-          <a href="javascript:void(0)" onclick="navigate('settings')" class="nav-link">Setting</a>
-        </nav>
-      </header>
-      <main class="main">
-        <section id="home" class="section active">
-          <h2>Selamat Datang</h2>
-          <p>Ini adalah halaman utama aplikasi sekolah Anda. Gunakan menu di atas untuk mengakses fitur lainnya.</p>
-        </section>
-        <section id="Foto" class="section">
-          <h2>Halaman Piket</h2>
-          <p>Ini adalah halaman untuk melihat daftar piket.</p>
-        </section>
-        <section id="jadwal" class="section">
-          <h2>Halaman Jadwal</h2>
-          <p>Ini adalah halaman untuk melihat jadwal pelajaran.</p>
-        </section>
-        <section id="denah" class="section">
-          <h2>Halaman Denah</h2>
-          <p>Ini adalah halaman denah kelas.</p>
-        </section>
-        <section id="struktur" class="section">
-          <h2>Halaman Struktur</h2>
-          <p>Ini adalah halaman struktur organisasi kelas.</p>
-        </section>
-        <section id="settings" class="section">
-          <h2>Halaman Setting</h2>
-          <p>Ini adalah halaman pengaturan aplikasi.</p>
-        </section>
-          <button class="logout-btn" onclick="logout()">Logout</button>
-        </section>
-      </main>
-    </div>
-    <div class="hidden" id="homePage">
-      <header class="header">
-        <h1 class="title">Aplikasi XI A2</h1>
-        <nav class="navbar">
-          <a href="javascript:void(0)" onclick="navigate('home')" class="nav-link">Home</a>
-          <a href="javascript:void(0)" onclick="navigate('Foto')" class="nav-link">Foto</a>
-          <a href="javascript:void(0)" onclick="navigate('jadwal')" class="nav-link">Jadwal</a>
-          <a href="javascript:void(0)" onclick="navigate('denah')" class="nav-link">Denah</a>
-          <a href="javascript:void(0)" onclick="navigate('struktur')" class="nav-link">Struktur</a>
-          <a href="javascript:void(0)" onclick="navigate('settings')" class="nav-link">Setting</a>
-        </nav>
-      </header>
-      <main class="main">
-        <section id="home" class="section active">
-          <h2>Selamat Datang</h2>
-          <p>Ini adalah halaman utama aplikasi sekolah Anda. Gunakan menu di atas untuk mengakses fitur lainnya.</p>
-        </section>
-        <section id="Foto" class="section">
-          <h2>Halaman Piket</h2>
-          <p>Ini adalah halaman untuk melihat daftar piket.</p>
-        </section>
-        <section id="jadwal" class="section">
-          <h2>Halaman Jadwal</h2>
-          <p>Ini adalah halaman untuk melihat jadwal pelajaran.</p>
-        </section>
-        <section id="denah" class="section">
-          <h2>Halaman Denah</h2>
-          <p>Ini adalah halaman denah kelas.</p>
-        </section>
-        <section id="struktur" class="section">
-          <h2>Halaman Struktur</h2>
-          <p>Ini adalah halaman struktur organisasi kelas.</p>
-        </section>
-        <section id="settings" class="section">
-          <h2>Halaman Setting</h2>
-          <p>Ini adalah halaman pengaturan aplikasi.</p>
-          <button class="logout-btn" onclick="logout()">Logout</button>
-        </section>
-      </main>
-    </div>
-    <div class="hidden" id="homePage">
-      <header class="header">
-        <h1 class="title">Aplikasi XI A2</h1>
-        <nav class="navbar">
-          <a href="javascript:void(0)" onclick="navigate('home')" class="nav-link">Home</a>
-          <a href="javascript:void(0)" onclick="navigate('Foto')" class="nav-link">Foto</a>
-          <a href="javascript:void(0)" onclick="navigate('jadwal')" class="nav-link">Jadwal</a>
-          <a href="javascript:void(0)" onclick="navigate('denah')" class="nav-link">Denah</a>
-          <a href="javascript:void(0)" onclick="navigate('struktur')" class="nav-link">Struktur</a>
-          <a href="javascript:void(0)" onclick="navigate('settings')" class="nav-link">Setting</a>
-        </nav>
-      </header>
-      <main class="main">
-        <section id="home" class="section active">
-          <h2>Selamat Datang</h2>
-          <p>Ini adalah halaman utama aplikasi sekolah Anda. Gunakan menu di atas untuk mengakses fitur lainnya.</p>
-        </section>
-        <section id="Foto" class="section">
-          <h2>Halaman Piket</h2>
-          <p>Ini adalah halaman untuk melihat daftar piket.</p>
-        </section>
-        <section id="jadwal" class="section">
-          <h2>Halaman Jadwal</h2>
-          <p>Ini adalah halaman untuk melihat jadwal pelajaran.</p>
-        </section>
-        <section id="denah" class="section">
-          <h2>Halaman Denah</h2>
-          <p>Ini adalah halaman denah kelas.</p>
-        </section>
-        <section id="struktur" class="section">
-          <h2>Halaman Struktur</h2>
-          <p>Ini adalah halaman struktur organisasi kelas.</p>
-        </section>
-        <section id="settings" class="section">
-          <h2>Halaman Setting</h2>
-          <p>Ini adalah halaman pengaturan aplikasi.</p>
-          <button class="logout-btn" onclick="logout()">Logout</button>
-        </section>
-      </main>
-    </div>
-    <script>
-      function isMobileDevice() {
-  return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
-
-if (!isMobileDevice()) {
-document.body.innerHTML = `
-<div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #7fbdfc;">
-<div style="text-align: center; padding: 20px; background-color: #e74c3c; color: white; border-radius: 10px;">
-<h1>Halaman ini hanya dapat diakses melalui perangkat mobile.</h1>
-<p>Silakan buka halaman ini di perangkat mobile Anda untuk melanjutkan.</p>
-</div>
-</div>
-`;
-}
-    </script>
-    <script src="Javascript/192.168.0.2.js"></script>
-    <script src="Javascript/192.168.0.3.js"></script>
-    <script src="Javascript/192.168.0.4.js"></script>
-    <script>
-      function navigate(pageId) {
-  const sections = document.querySelectorAll('.section');
-  sections.forEach(section => section.classList.remove('active'));
-  document.getElementById(pageId).classList.add('active');
-}
-    </script>
-    <script>
-      function logout() {
-  document.getElementById('Admin').classList.add('hidden');
-  document.getElementById('loginPage').classList.remove('hidden');
-}
-    </script>
-    <script src="Javascript/192.168.0.7.js"></script>
-    <script src="Javascript/192.168.0.8.js"></script>
-    <script src="Javascript/192.168.0.9.js"></script>
-    <script src="Javascript/192.168.1.0.js"></script>
-  </body>
+</body>
 </html>
