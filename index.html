@@ -2,201 +2,723 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Galeri Foto Responsif</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Absensi Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-        }
-        h1 {
-            margin-bottom: 20px;
-        }
-        .gallery {
-            display: grid;
-            gap: 15px;
-            justify-content: center;
-        }
-        /* Default untuk layar besar (5 kotak per baris) */
-        .gallery {
-            grid-template-columns: repeat(5, 1fr);
-        }
-        /* Tablet (4 kotak per baris) */
-        @media (max-width: 1024px) {
-            .gallery {
-                grid-template-columns: repeat(4, 1fr);
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-shadow { box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .btn-hover { transition: all 0.3s ease; }
+        .btn-hover:hover { transform: translateY(-2px); }
+        .status-btn { transition: all 0.2s ease; }
+        .status-btn.active { transform: scale(0.95); }
+        .loading { animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Mobile optimizations */
+        @media (max-width: 640px) {
+            .status-buttons { 
+                display: grid; 
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 0.5rem; 
+            }
+            .status-btn { 
+                font-size: 0.75rem; 
+                padding: 0.5rem 0.75rem; 
+                text-align: center;
+            }
+            .student-info { 
+                font-size: 0.75rem; 
+            }
+            .student-name { 
+                font-size: 0.9rem; 
+                line-height: 1.2;
             }
         }
-        /* Ponsel (2 kotak per baris) */
-        @media (max-width: 768px) {
-            .gallery {
-                grid-template-columns: repeat(2, 1fr);
+        
+        /* Tablet optimizations */
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .status-buttons { 
+                display: flex; 
+                flex-wrap: wrap; 
+                gap: 0.5rem; 
+            }
+            .status-btn { 
+                flex: 1; 
+                min-width: 80px; 
+                font-size: 0.8rem;
             }
         }
-        .photo-container {
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 10px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .photo-wrapper {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%; /* Rasio 16:9 */
-            overflow: hidden;
-            border-radius: 8px;
-        }
-        .photo-wrapper img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .date {
-            margin-top: 8px;
-            font-size: 12px;
-            color: #555;
-        }
-        .buttons {
-            margin-top: 10px;
-        }
-        button {
-            padding: 8px 12px;
-            margin: 3px;
-            font-size: 12px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn-open {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .btn-download {
-            background-color: #008CBA;
-            color: white;
-        }
-        button:hover {
-            opacity: 0.8;
-        }
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal img {
-            max-width: 100%;
-            max-height: 100%;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
-            touch-action: pan-x pan-y; /* Memungkinkan zoom dengan pinch */
-        }
-        .modal .close-btn {
-            display: none;
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            font-size: 24px;
-            color: white;
-            cursor: pointer;
-        }
+        
+        /* Desktop optimizations */
         @media (min-width: 1025px) {
-            .modal .close-btn {
-                display: block;
+            .status-buttons { 
+                display: flex; 
+                gap: 0.5rem; 
             }
         }
     </style>
 </head>
-<body>
-    <h1>TUGAS</h1>
-    <div class="gallery">
-        <!-- Foto 1 -->
-        <div class="photo-container">
-            <div class="photo-wrapper">
-                <img src="foto1.jpg" alt="Matematika" id="foto1">
-            </div>
-            <div class="date">Hal 144</div>
-            <div class="buttons">
-                <button class="btn-open" onclick="bukaFoto('foto1.jpg')">Buka</button>
-                <button class="btn-download" onclick="downloadFoto('foto1.jpg')">Download</button>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <div class="gradient-bg text-white py-4 sm:py-6 mb-6 sm:mb-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-2">
+                    <i class="fas fa-clipboard-check mr-2 sm:mr-3"></i>
+                    <span class="block sm:inline">Sistem Absensi Online</span>
+                </h1>
+                <p class="text-blue-100 text-sm sm:text-base">Kelas XI A2 - SMA</p>
             </div>
         </div>
-        <div class="photo-container">
-            <div class="photo-wrapper">
-                <img src="foto2.jpg" alt="Matematika" id="foto1">
-            </div>
-            <div class="date">Hal 144</div>
-            <div class="buttons">
-                <button class="btn-open" onclick="bukaFoto('foto2.jpg')">Buka</button>
-                <button class="btn-download" onclick="downloadFoto('foto2.jpg')">Download</button>
-            </div>
-        </div>
-        <div class="photo-container">
-            <div class="photo-wrapper">
-                <img src="foto3.jpg" alt="Matematika" id="foto1">
-            </div>
-            <div class="date">Hal 145</div>
-            <div class="buttons">
-                <button class="btn-open" onclick="bukaFoto('foto3.jpg')">Buka</button>
-                <button class="btn-download" onclick="downloadFoto('foto3.jpg')">Download</button>
-            </div>
-        </div>
-        <!-- Tambahkan foto lainnya di sini -->
     </div>
 
-    <!-- Modal -->
-    <div class="modal" id="modal">
-        <span class="close-btn" onclick="tutupModal()">×</span>
-        <img id="modalImg" src="" alt="Gambar Asli">
+    <div class="container mx-auto px-4 max-w-7xl">
+        <!-- Date and Schedule Menu -->
+        <div class="bg-white rounded-xl card-shadow p-4 sm:p-6 mb-6 sm:mb-8 fade-in">
+            <!-- Date Display -->
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-6 space-y-4 sm:space-y-0">
+                <div class="flex items-center text-center sm:text-left">
+                    <i class="fas fa-calendar-alt text-blue-600 text-xl sm:text-2xl mr-3 sm:mr-4"></i>
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-semibold text-gray-800" id="currentDate"></h2>
+                        <p class="text-sm sm:text-base text-gray-600" id="currentTime"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Schedule Menu -->
+            <div class="border-t pt-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center sm:text-left">
+                    <i class="fas fa-calendar-plus mr-2"></i>
+                    Pengaturan Tanggal & Jadwal
+                </h3>
+                
+                <!-- Date Selection -->
+                <div class="mb-6">
+                    <h4 class="text-sm font-medium text-gray-600 mb-4">Pilih Tanggal Absensi</h4>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
+                        <div class="flex flex-col lg:flex-row items-start lg:items-center space-y-4 lg:space-y-0 lg:space-x-6">
+                            <!-- Date Input Section -->
+                            <div class="flex-1">
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-calendar-alt text-blue-500 text-lg"></i>
+                                    </div>
+                                    <input type="date" id="attendanceDate" 
+                                           class="w-full pl-10 pr-4 py-3 border border-blue-300 rounded-lg text-sm font-medium text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all shadow-sm hover:shadow-md" 
+                                           onchange="updateSelectedDate()">
+                                </div>
+                            </div>
+                            
+                            <!-- Quick Actions -->
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="setToday()" class="btn-hover bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
+                                    <i class="fas fa-calendar-day mr-2"></i>Hari Ini
+                                </button>
+                                <button onclick="setYesterday()" class="btn-hover bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
+                                    <i class="fas fa-arrow-left mr-2"></i>Kemarin
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Selected Date Display -->
+                        <div class="mt-4 p-3 bg-white rounded-lg border border-blue-200 shadow-sm">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+                                    <span class="text-sm text-gray-600">Tanggal Terpilih:</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span id="selectedDateDisplay" class="font-semibold text-blue-700 text-sm">Belum dipilih</span>
+                                    <span id="dateStatus" class="ml-2 px-2 py-1 text-xs font-medium rounded-full"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Regular Class Hours -->
+                <div class="mb-4">
+                    <h4 class="text-sm font-medium text-gray-600 mb-3">Jam Pelajaran Regular</h4>
+                    <div class="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-2">
+                        <button onclick="selectSchedule('jam1')" id="jam1" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
+                            <i class="fas fa-clock mr-1"></i>Jam 1
+                        </button>
+                        <button onclick="selectSchedule('jam2')" id="jam2" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
+                            <i class="fas fa-clock mr-1"></i>Jam 2
+                        </button>
+                        <button onclick="selectSchedule('jam3')" id="jam3" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
+                            <i class="fas fa-clock mr-1"></i>Jam 3
+                        </button>
+                        <button onclick="selectSchedule('jam4')" id="jam4" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
+                            <i class="fas fa-clock mr-1"></i>Jam 4
+                        </button>
+                        <button onclick="selectSchedule('jam5')" id="jam5" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
+                            <i class="fas fa-clock mr-1"></i>Jam 5
+                        </button>
+                        <button onclick="selectSchedule('jam6')" id="jam6" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
+                            <i class="fas fa-clock mr-1"></i>Jam 6
+                        </button>
+                        <button onclick="selectSchedule('jam7')" id="jam7" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
+                            <i class="fas fa-clock mr-1"></i>Jam 7
+                        </button>
+                        <button onclick="selectSchedule('jam8')" id="jam8" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
+                            <i class="fas fa-clock mr-1"></i>Jam 8
+                        </button>
+                        <button onclick="selectSchedule('jam9')" id="jam9" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
+                            <i class="fas fa-clock mr-1"></i>Jam 9
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Tutoring Hours -->
+                <div>
+                    <h4 class="text-sm font-medium text-gray-600 mb-3">Jam Bimbel</h4>
+                    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-2 max-w-md">
+                        <button onclick="selectSchedule('bimbel1')" id="bimbel1" class="schedule-btn bg-purple-100 hover:bg-purple-200 text-purple-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
+                            <i class="fas fa-graduation-cap mr-1"></i>Bimbel 1
+                        </button>
+                        <button onclick="selectSchedule('bimbel2')" id="bimbel2" class="schedule-btn bg-purple-100 hover:bg-purple-200 text-purple-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
+                            <i class="fas fa-graduation-cap mr-1"></i>Bimbel 2
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Selected Schedule Display -->
+                <div class="mt-4 p-3 bg-gray-50 rounded-lg">
+                    <p class="text-sm text-gray-600">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        Jadwal Terpilih: <span id="selectedSchedule" class="font-semibold text-blue-600">Belum dipilih</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Students List -->
+        <div class="bg-white rounded-xl card-shadow p-4 sm:p-6 mb-6 sm:mb-8 fade-in">
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6 space-y-4 sm:space-y-0">
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-800 text-center sm:text-left">
+                    <i class="fas fa-users mr-2"></i>
+                    <span class="block sm:inline">Daftar Siswa</span>
+                    <span class="text-sm sm:text-base text-gray-600 block sm:inline">(36 Siswa)</span>
+                </h3>
+                <button onclick="markAllPresent()" class="btn-hover bg-green-600 hover:bg-green-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base w-full sm:w-auto">
+                    <i class="fas fa-check-double mr-2"></i>
+                    Hadir Semua
+                </button>
+            </div>
+            
+            <div class="grid gap-3 sm:gap-4" id="studentsList">
+                <!-- Students will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center mb-6 sm:mb-8 fade-in px-4 sm:px-0">
+            <button onclick="submitAttendance()" id="submitBtn" class="btn-hover bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg w-full sm:w-auto max-w-xs sm:max-w-none">
+                <i class="fas fa-paper-plane mr-2"></i>
+                Kirim Absensi
+            </button>
+        </div>
+
+        <!-- Class Statistics -->
+        <div class="bg-white rounded-xl card-shadow p-4 sm:p-6 mb-6 sm:mb-8 fade-in">
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4 sm:mb-6 text-center sm:text-left">
+                <i class="fas fa-chart-bar mr-2"></i>
+                <span class="block sm:inline">Data Kelas</span>
+            </h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
+                    <div class="flex items-center justify-center mb-2">
+                        <i class="fas fa-users text-gray-600 text-xl mr-2"></i>
+                        <h4 class="font-semibold text-gray-800">Total Siswa</h4>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-600" id="totalCount">0</p>
+                </div>
+                
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+                    <div class="flex items-center justify-center mb-2">
+                        <i class="fas fa-mars text-blue-600 text-xl mr-2"></i>
+                        <h4 class="font-semibold text-blue-800">Siswa Laki-Laki</h4>
+                    </div>
+                    <p class="text-2xl font-bold text-blue-600" id="maleCount">0</p>
+                </div>
+                
+                <div class="bg-pink-50 border border-pink-200 rounded-lg p-4 text-center">
+                    <div class="flex items-center justify-center mb-2">
+                        <i class="fas fa-venus text-pink-600 text-xl mr-2"></i>
+                        <h4 class="font-semibold text-pink-800">Siswa Perempuan</h4>
+                    </div>
+                    <p class="text-2xl font-bold text-pink-600" id="femaleCount">0</p>
+                </div>
+                
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                    <div class="flex items-center justify-center mb-2">
+                        <i class="fas fa-moon text-green-600 text-xl mr-2"></i>
+                        <h4 class="font-semibold text-green-800">Total Islam</h4>
+                    </div>
+                    <p class="text-2xl font-bold text-green-600" id="islamTotalCount">0</p>
+                </div>
+                
+                <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4 text-center">
+                    <div class="flex items-center justify-center mb-2">
+                        <i class="fas fa-moon text-emerald-600 text-xl mr-2"></i>
+                        <h4 class="font-semibold text-emerald-800">Islam Laki-Laki</h4>
+                    </div>
+                    <p class="text-2xl font-bold text-emerald-600" id="islamMaleCount">0</p>
+                </div>
+                
+                <div class="bg-teal-50 border border-teal-200 rounded-lg p-4 text-center">
+                    <div class="flex items-center justify-center mb-2">
+                        <i class="fas fa-moon text-teal-600 text-xl mr-2"></i>
+                        <h4 class="font-semibold text-teal-800">Islam Perempuan</h4>
+                    </div>
+                    <p class="text-2xl font-bold text-teal-600" id="islamFemaleCount">0</p>
+                </div>
+                
+                <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 text-center">
+                    <div class="flex items-center justify-center mb-2">
+                        <i class="fas fa-cross text-purple-600 text-xl mr-2"></i>
+                        <h4 class="font-semibold text-purple-800">Total Protestan</h4>
+                    </div>
+                    <p class="text-2xl font-bold text-purple-600" id="protestantTotalCount">0</p>
+                </div>
+                
+                <div class="bg-violet-50 border border-violet-200 rounded-lg p-4 text-center">
+                    <div class="flex items-center justify-center mb-2">
+                        <i class="fas fa-cross text-violet-600 text-xl mr-2"></i>
+                        <h4 class="font-semibold text-violet-800">Protestan Laki-Laki</h4>
+                    </div>
+                    <p class="text-2xl font-bold text-violet-600" id="protestantMaleCount">0</p>
+                </div>
+                
+                <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4 text-center">
+                    <div class="flex items-center justify-center mb-2">
+                        <i class="fas fa-cross text-indigo-600 text-xl mr-2"></i>
+                        <h4 class="font-semibold text-indigo-800">Protestan Perempuan</h4>
+                    </div>
+                    <p class="text-2xl font-bold text-indigo-600" id="protestantFemaleCount">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4 text-center mx-4 sm:mx-0 text-sm sm:text-base">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span class="block sm:inline">Absen berhasil dikirim ke Google Spreadsheet!</span>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4 text-center mx-4 sm:mx-0 text-sm sm:text-base">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            <span class="block sm:inline">Terjadi kesalahan saat mengirim data. Silakan coba lagi.</span>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm sm:text-base">
+                © 2025 Kelas XII-A2
+            </p>
+        </div>
+    </footer>
 
     <script>
-        let klikCount = 0;
-        let timeout;
+        // Current selected schedule and date
+        let currentSchedule = null;
+        let selectedDate = null;
+        
+        // Schedule selection function
+        function selectSchedule(scheduleId) {
+            // Remove active class from all schedule buttons
+            document.querySelectorAll('.schedule-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white', 'bg-purple-600');
+                if (btn.id.startsWith('jam')) {
+                    btn.classList.add('bg-blue-100', 'text-blue-800');
+                } else {
+                    btn.classList.add('bg-purple-100', 'text-purple-800');
+                }
+            });
+            
+            // Add active class to selected button
+            const selectedBtn = document.getElementById(scheduleId);
+            if (scheduleId.startsWith('jam')) {
+                selectedBtn.classList.remove('bg-blue-100', 'text-blue-800');
+                selectedBtn.classList.add('bg-blue-600', 'text-white');
+            } else {
+                selectedBtn.classList.remove('bg-purple-100', 'text-purple-800');
+                selectedBtn.classList.add('bg-purple-600', 'text-white');
+            }
+            
+            // Update current schedule
+            currentSchedule = scheduleId;
+            
+            // Update display
+            const scheduleNames = {
+                'jam1': 'Jam Pelajaran 1',
+                'jam2': 'Jam Pelajaran 2',
+                'jam3': 'Jam Pelajaran 3',
+                'jam4': 'Jam Pelajaran 4',
+                'jam5': 'Jam Pelajaran 5',
+                'jam6': 'Jam Pelajaran 6',
+                'jam7': 'Jam Pelajaran 7',
+                'jam8': 'Jam Pelajaran 8',
+                'jam9': 'Jam Pelajaran 9',
+                'bimbel1': 'Jam Bimbel 1',
+                'bimbel2': 'Jam Bimbel 2'
+            };
+            
+            document.getElementById('selectedSchedule').textContent = scheduleNames[scheduleId];
+        }
+        
+        // Set today's date
+        function setToday() {
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById('attendanceDate').value = formattedDate;
+            selectedDate = formattedDate;
+            updateSelectedDate();
+        }
+        
+        // Set yesterday's date
+        function setYesterday() {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const formattedDate = yesterday.toISOString().split('T')[0];
+            document.getElementById('attendanceDate').value = formattedDate;
+            selectedDate = formattedDate;
+            updateSelectedDate();
+        }
+        
 
-        function bukaFoto(src) {
-            const modal = document.getElementById('modal');
-            const modalImg = document.getElementById('modalImg');
-            modalImg.src = src;
-            modal.style.display = 'flex';
-
-            // Atur perilaku khusus untuk ponsel/tablet
-            if (window.innerWidth <= 1024) {
-                modal.onclick = function () {
-                    klikCount++;
-                    if (klikCount === 2) {
-                        tutupModal();
-                        klikCount = 0;
-                    }
-                    clearTimeout(timeout);
-                    timeout = setTimeout(() => (klikCount = 0), 300);
+        
+        // Update selected date display
+        function updateSelectedDate() {
+            const dateInput = document.getElementById('attendanceDate');
+            selectedDate = dateInput.value;
+            
+            if (selectedDate) {
+                const date = new Date(selectedDate);
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric'
                 };
+                const formattedDate = date.toLocaleDateString('id-ID', options);
+                
+                // Update selected date display
+                document.getElementById('selectedDateDisplay').textContent = formattedDate;
+                
+                // Update date status badge
+                const today = new Date().toISOString().split('T')[0];
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                const yesterdayStr = yesterday.toISOString().split('T')[0];
+                
+                const dateStatus = document.getElementById('dateStatus');
+                
+                if (selectedDate === today) {
+                    dateStatus.textContent = 'Hari Ini';
+                    dateStatus.className = 'ml-2 px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800';
+                    document.getElementById('currentDate').textContent = formattedDate + ' (Hari Ini)';
+                } else if (selectedDate === yesterdayStr) {
+                    dateStatus.textContent = 'Kemarin';
+                    dateStatus.className = 'ml-2 px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800';
+                    document.getElementById('currentDate').textContent = formattedDate + ' (Kemarin)';
+                } else {
+                    const selectedDateObj = new Date(selectedDate);
+                    const todayObj = new Date();
+                    
+                    if (selectedDateObj < todayObj) {
+                        dateStatus.textContent = 'Masa Lalu';
+                        dateStatus.className = 'ml-2 px-2 py-1 text-xs font-medium rounded-full bg-orange-100 text-orange-800';
+                    } else {
+                        dateStatus.textContent = 'Masa Depan';
+                        dateStatus.className = 'ml-2 px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800';
+                    }
+                    document.getElementById('currentDate').textContent = formattedDate;
+                }
+            } else {
+                document.getElementById('selectedDateDisplay').textContent = 'Belum dipilih';
+                document.getElementById('dateStatus').textContent = '';
+                document.getElementById('dateStatus').className = 'ml-2 px-2 py-1 text-xs font-medium rounded-full';
             }
         }
 
-        function tutupModal() {
-            const modal = document.getElementById('modal');
-            modal.style.display = 'none';
+        // Student data
+        const students = [
+            {name: "ALDRIAN RONALSON TITIHERU", gender: "L", religion: "P", nisn: "0086569596", birthDate: "2008-06-21"},
+            {name: "Alfian Adi Purnomo", gender: "L", religion: "I", nisn: "0074600412", birthDate: "2007-11-12"},
+            {name: "Aprilia Elisabet Yesnat", gender: "P", religion: "P", nisn: "0074869716", birthDate: "2007-04-19"},
+            {name: "Aurilius Tian Gerardo Saputra", gender: "L", religion: "P", nisn: "0084182312", birthDate: "2008-07-27"},
+            {name: "Bryan Edward Julyanto Bukari", gender: "L", religion: "P", nisn: "0085773109", birthDate: "2008-07-14"},
+            {name: "Cici Deswita Febriani", gender: "P", religion: "I", nisn: "0087909379", birthDate: "2008-02-02"},
+            {name: "CINTA LAURA HURULEA", gender: "P", religion: "P", nisn: "0071572020", birthDate: "2007-06-25"},
+            {name: "DANIYATI", gender: "P", religion: "I", nisn: "0084706853", birthDate: "2008-02-17"},
+            {name: "Deby Debora Kemesrar", gender: "P", religion: "P", nisn: "0077862282", birthDate: "2007-12-07"},
+            {name: "DELVERO EDWADT KALAMI", gender: "L", religion: "P", nisn: "0074678081", birthDate: "2007-03-19"},
+            {name: "ELDA W. KAMESFLE", gender: "P", religion: "P", nisn: "0086951699", birthDate: "2008-09-16"},
+            {name: "FALEN PRATAMA AYGE", gender: "L", religion: "I", nisn: "0082593218", birthDate: "2008-01-08"},
+            {name: "Falensia Marissa Runtu", gender: "P", religion: "P", nisn: "0083861529", birthDate: "2008-03-04"},
+            {name: "HARRY PANCA POLSIARY", gender: "L", religion: "P", nisn: "0082383142", birthDate: "2008-06-01"},
+            {name: "Herman Gabriel Fonataba", gender: "L", religion: "P", nisn: "0076202678", birthDate: "2007-08-12"},
+            {name: "Jessie Melissa Cantika Latue", gender: "P", religion: "P", nisn: "0087163665", birthDate: "2008-08-25"},
+            {name: "JUEN FRIDA LEKAHENA", gender: "P", religion: "P", nisn: "0089030733", birthDate: "2008-07-24"},
+            {name: "JUNIOR PASKAL TAHITU", gender: "L", religion: "P", nisn: "3081721982", birthDate: "2008-06-06"},
+            {name: "KIKI KHUSNUL OKTAVIANTI", gender: "P", religion: "I", nisn: "0084883601", birthDate: "2008-10-18"},
+            {name: "MARIA FRESENDA LEWATAKA", gender: "P", religion: "P", nisn: "0075144653", birthDate: "2007-02-23"},
+            {name: "MARIA MAGDALENA SNANFI", gender: "P", religion: "P", nisn: "0068245373", birthDate: "2006-12-26"},
+            {name: "Maya Rosaida Paa", gender: "P", religion: "I", nisn: "0083549719", birthDate: "2008-03-02"},
+            {name: "MELANI STEFANNY LOIWATU", gender: "P", religion: "P", nisn: "0083620504", birthDate: "2008-09-22"},
+            {name: "MUHAMMAD FADLAN", gender: "L", religion: "I", nisn: "0088975994", birthDate: "2008-07-15"},
+            {name: "NAOMI TRESIA PAITEI", gender: "P", religion: "P", nisn: "0069826001", birthDate: "2006-09-17"},
+            {name: "NATHALIA RUMBINO", gender: "P", religion: "P", nisn: "0084346261", birthDate: "2008-12-24"},
+            {name: "Novela Jessica Ta'bilangi", gender: "P", religion: "P", nisn: "0084620689", birthDate: "2008-11-09"},
+            {name: "OLGA I. LIKLIKWATIL", gender: "P", religion: "P", nisn: "0083566510", birthDate: "2008-06-29"},
+            {name: "RACHEL MANUELA MAYOR", gender: "P", religion: "P", nisn: "0074609402", birthDate: "2007-10-25"},
+            {name: "RATNA SARI ABDULMUIN", gender: "P", religion: "I", nisn: "0073546378", birthDate: "2007-03-18"},
+            {name: "Raymond Edwin Soselisa", gender: "L", religion: "P", nisn: "0075153529", birthDate: "2007-10-31"},
+            {name: "Rizky", gender: "L", religion: "I", nisn: "0072596236", birthDate: "2007-12-20"},
+            {name: "SAMUEL.FANIK.TEHUPEIORY", gender: "L", religion: "P", nisn: "0075251376", birthDate: "2007-07-15"},
+            {name: "Tiara Arung Silambi", gender: "P", religion: "P", nisn: "0098566104", birthDate: "2009-04-08"},
+            {name: "WULAN RAHMADANI", gender: "P", religion: "I", nisn: "0083616763", birthDate: "2008-08-30"},
+            {name: "ZAINU", gender: "L", religion: "I", nisn: "0072673338", birthDate: "2007-11-23"}
+        ];
+
+        // Attendance status for each student
+        let attendance = {};
+
+        // Initialize attendance with default "Hadir" status
+        students.forEach(student => {
+            attendance[student.name] = "Hadir";
+        });
+
+        // Update date and time
+        function updateDateTime() {
+            const now = new Date();
+            // Convert to WIT - Use local browser time (no adjustment)
+            const witTime = new Date(now.getTime());
+            
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric'
+            };
+            
+            // Format time manually to ensure correct WIT display
+            const hours = String(witTime.getHours()).padStart(2, '0');
+            const minutes = String(witTime.getMinutes()).padStart(2, '0');
+            const seconds = String(witTime.getSeconds()).padStart(2, '0');
+            
+            document.getElementById('currentDate').textContent = witTime.toLocaleDateString('id-ID', options);
+            document.getElementById('currentTime').textContent = `${hours}:${minutes}:${seconds} WIT`;
         }
 
-        function downloadFoto(src) {
-            const link = document.createElement('a');
-            link.href = src;
-            link.download = src.split('/').pop();
-            link.click();
+        // Create student card
+        function createStudentCard(student, index) {
+            const genderIcon = student.gender === 'L' ? 'fas fa-mars text-blue-500' : 'fas fa-venus text-pink-500';
+            const religionFull = student.religion === 'I' ? 'Islam' : student.religion === 'P' ? 'Protestan' : 'Katolik';
+            
+            return `
+                <div class="border border-gray-200 rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow">
+                    <div class="flex flex-col space-y-3">
+                        <div class="flex-1">
+                            <div class="flex items-start sm:items-center mb-2 flex-col sm:flex-row">
+                                <div class="flex items-center mb-1 sm:mb-0">
+                                    <span class="bg-blue-100 text-blue-800 text-xs sm:text-sm font-medium px-2 py-1 rounded mr-2 sm:mr-3 flex-shrink-0">
+                                        ${index + 1}
+                                    </span>
+                                    <h4 class="font-semibold text-gray-800 student-name text-sm sm:text-base">${student.name}</h4>
+                                    <i class="${genderIcon} ml-2 flex-shrink-0"></i>
+                                </div>
+                            </div>
+                            <div class="student-info text-xs sm:text-sm text-gray-600 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1 sm:gap-2">
+                                <span class="flex items-center"><i class="fas fa-pray mr-1 w-3"></i>${religionFull}</span>
+                                <span class="flex items-center"><i class="fas fa-id-card mr-1 w-3"></i>NISN: ${student.nisn}</span>
+                                <span class="flex items-center sm:col-span-2 lg:col-span-1"><i class="fas fa-birthday-cake mr-1 w-3"></i>${new Date(student.birthDate).toLocaleDateString('id-ID')}</span>
+                            </div>
+                        </div>
+                        <div class="status-buttons">
+                            <button onclick="setAttendance('${student.name}', 'Hadir')" 
+                                    class="status-btn px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all
+                                           ${attendance[student.name] === 'Hadir' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-green-100'}">
+                                <i class="fas fa-check mr-1"></i>Hadir
+                            </button>
+                            <button onclick="setAttendance('${student.name}', 'Sakit')" 
+                                    class="status-btn px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all
+                                           ${attendance[student.name] === 'Sakit' ? 'bg-yellow-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-yellow-100'}">
+                                <i class="fas fa-thermometer-half mr-1"></i>Sakit
+                            </button>
+                            <button onclick="setAttendance('${student.name}', 'Izin')" 
+                                    class="status-btn px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all
+                                           ${attendance[student.name] === 'Izin' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-blue-100'}">
+                                <i class="fas fa-hand-paper mr-1"></i>Izin
+                            </button>
+                            <button onclick="setAttendance('${student.name}', 'Alpa')" 
+                                    class="status-btn px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all
+                                           ${attendance[student.name] === 'Alpa' ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-red-100'}">
+                                <i class="fas fa-times mr-1"></i>Alpa
+                            </button>
+                            <button onclick="setAttendance('${student.name}', 'Bolos')" 
+                                    class="status-btn px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all
+                                           ${attendance[student.name] === 'Bolos' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-purple-100'}">
+                                <i class="fas fa-user-slash mr-1"></i>Bolos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
+
+        // Set attendance status
+        function setAttendance(studentName, status) {
+            attendance[studentName] = status;
+            renderStudents();
+        }
+
+        // Mark all students as present
+        function markAllPresent() {
+            students.forEach(student => {
+                attendance[student.name] = "Hadir";
+            });
+            renderStudents();
+        }
+
+        // Render students list
+        function renderStudents() {
+            const studentsList = document.getElementById('studentsList');
+            studentsList.innerHTML = students.map((student, index) => createStudentCard(student, index)).join('');
+        }
+
+        // Submit attendance to Google Sheets
+        async function submitAttendance() {
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Hide previous messages
+            successMessage.classList.add('hidden');
+            errorMessage.classList.add('hidden');
+            
+            // Show loading state
+            submitBtn.innerHTML = '<i class="fas fa-spinner loading mr-2"></i>Mengirim...';
+            submitBtn.disabled = true;
+            
+            try {
+                const now = new Date();
+                // Use local browser time (no adjustment)
+                const witTime = new Date(now.getTime());
+                const date = witTime.toLocaleDateString('id-ID');
+                
+                // Format time manually for WIT
+                const hours = String(witTime.getHours()).padStart(2, '0');
+                const minutes = String(witTime.getMinutes()).padStart(2, '0');
+                const seconds = String(witTime.getSeconds()).padStart(2, '0');
+                const time = `${hours}:${minutes}:${seconds} WIT`;
+                
+                // Check if date and schedule are selected
+                if (!selectedDate) {
+                    errorMessage.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i><span class="block sm:inline">Silakan pilih tanggal absensi terlebih dahulu!</span>';
+                    errorMessage.classList.remove('hidden');
+                    errorMessage.scrollIntoView({ behavior: 'smooth' });
+                    return;
+                }
+                
+                if (!currentSchedule) {
+                    errorMessage.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i><span class="block sm:inline">Silakan pilih jadwal pelajaran terlebih dahulu!</span>';
+                    errorMessage.classList.remove('hidden');
+                    errorMessage.scrollIntoView({ behavior: 'smooth' });
+                    return;
+                }
+                
+                // Prepare data for Google Sheets
+                const attendanceData = {
+                    selectedDate: selectedDate,
+                    currentDate: date,
+                    time: time,
+                    schedule: currentSchedule,
+                    attendance: attendance
+                };
+                
+                // Replace with your Google Apps Script Web App URL
+                const scriptURL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+                
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(attendanceData)
+                });
+                
+                if (response.ok) {
+                    successMessage.classList.remove('hidden');
+                    successMessage.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                errorMessage.classList.remove('hidden');
+                errorMessage.scrollIntoView({ behavior: 'smooth' });
+            } finally {
+                // Reset button
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Kirim Absensi';
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Calculate and update class statistics
+        function updateClassStatistics() {
+            const maleCount = students.filter(student => student.gender === 'L').length;
+            const femaleCount = students.filter(student => student.gender === 'P').length;
+            const totalCount = students.length;
+            
+            const islamMaleCount = students.filter(student => student.religion === 'I' && student.gender === 'L').length;
+            const islamFemaleCount = students.filter(student => student.religion === 'I' && student.gender === 'P').length;
+            const islamTotalCount = students.filter(student => student.religion === 'I').length;
+            
+            const protestantMaleCount = students.filter(student => student.religion === 'P' && student.gender === 'L').length;
+            const protestantFemaleCount = students.filter(student => student.religion === 'P' && student.gender === 'P').length;
+            const protestantTotalCount = students.filter(student => student.religion === 'P').length;
+            
+            document.getElementById('maleCount').textContent = maleCount;
+            document.getElementById('femaleCount').textContent = femaleCount;
+            document.getElementById('totalCount').textContent = totalCount;
+            document.getElementById('islamTotalCount').textContent = islamTotalCount;
+            document.getElementById('islamMaleCount').textContent = islamMaleCount;
+            document.getElementById('islamFemaleCount').textContent = islamFemaleCount;
+            document.getElementById('protestantTotalCount').textContent = protestantTotalCount;
+            document.getElementById('protestantMaleCount').textContent = protestantMaleCount;
+            document.getElementById('protestantFemaleCount').textContent = protestantFemaleCount;
+        }
+
+        // Initialize the application
+        function init() {
+            updateDateTime();
+            renderStudents();
+            updateClassStatistics();
+            
+            // Set today's date as default
+            setToday();
+            
+            // Update time every second
+            setInterval(updateDateTime, 1000);
+        }
+
+        // Start the application when page loads
+        document.addEventListener('DOMContentLoaded', init);
     </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e7c5e2e6ba8e13',t:'MTc1NTA4MzUwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
