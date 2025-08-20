@@ -17,8 +17,9 @@
     .fade { animation: fade .35s ease; } @keyframes fade { from {opacity:0; transform: translateY(8px);} to {opacity:1; transform: translateY(0);} }
     .status-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
     @media (min-width: 640px){ .status-grid { display: flex; flex-wrap: wrap; gap: .5rem; } }
-    .nav-tab { color: #c7d2fe; }
-    .nav-tab.active { color: #fff; background: rgba(255,255,255,.12); }
+    .nav-tab { color: #ffffff; border: 1px solid rgba(255,255,255,.25); border-radius: 9999px; background: rgba(255,255,255,.08); box-shadow: 0 2px 6px rgba(0,0,0,.08); }
+    .nav-tab:hover { background: rgba(255,255,255,.16); }
+    .nav-tab.active { color: #fff; background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.6); box-shadow: 0 6px 16px rgba(0,0,0,.18); }
     .app-bg-2 { background: radial-gradient(1200px 800px at 0% 0%, #dbeafe 0%, #f5d0fe 45%, #fdf2f8 75%, #eef2ff 100%); }
     .table-wrap { max-height: 60vh; overflow: auto; }
     .th-sticky { position: sticky; top: 0; background: #f8fafc; z-index: 5; }
@@ -120,17 +121,17 @@
             </button>
           </div>
         </div>
-        <div class="mt-4 flex items-center gap-2 flex-wrap">
-          <button id="tabAbsensi" class="nav-tab active px-4 py-2 rounded-lg font-semibold text-sm" onclick="switchTab('absen')">
+        <div class="mt-4 flex items-center gap-3 flex-wrap">
+          <button id="tabAbsensi" class="nav-tab active px-5 py-2.5 rounded-full font-bold text-sm tracking-wide" onclick="switchTab('absen')">
             <i class="fa-solid fa-clipboard-check mr-2"></i>Absen
           </button>
-          <button id="tabRekapan" class="nav-tab px-4 py-2 rounded-lg font-semibold text-sm" onclick="goToRekapan()">
+          <button id="tabRekapan" class="nav-tab px-5 py-2.5 rounded-full font-bold text-sm tracking-wide" onclick="goToRekapan()">
             <i class="fa-solid fa-chart-pie mr-2"></i>Rekapan
           </button>
-          <button id="tabRekapSemester" class="nav-tab px-4 py-2 rounded-lg font-semibold text-sm" onclick="switchTab('rekapSemester')">
+          <button id="tabRekapSemester" class="nav-tab px-5 py-2.5 rounded-full font-bold text-sm tracking-wide" onclick="switchTab('rekapSemester')">
             <i class="fa-solid fa-calendar-days mr-2"></i>Rekapan Semester
           </button>
-          <button id="tabEditAbsensi" class="nav-tab px-4 py-2 rounded-lg font-semibold text-sm" onclick="switchTab('edit')">
+          <button id="tabEditAbsensi" class="nav-tab px-5 py-2.5 rounded-full font-bold text-sm tracking-wide" onclick="switchTab('edit')">
             <i class="fa-solid fa-pen-to-square mr-2"></i>Edit Absensi
           </button>
           <span class="ml-auto text-xs text-indigo-100 sm:hidden" id="clockMini"></span>
@@ -146,9 +147,9 @@
           <div class="grid lg:grid-cols-2 gap-6">
             <!-- Kolom kiri: Tanggal + tombol Rekapan -->
             <div>
-              <div class="mb-3 flex items-center justify-between gap-2 flex-wrap">
+              <div class="mb-3 flex items-center justify-between gap-3 flex-wrap">
                 <div class="text-sm text-gray-500">Navigasi cepat</div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 flex-wrap">
                   <button onclick="goToRekapan()" class="btn bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">
                     <i class="fa-solid fa-chart-pie mr-2"></i>Rekapan
                   </button>
@@ -299,7 +300,7 @@
               <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
                 <i class="fa-solid fa-filter text-indigo-600"></i> Filter Rekap
               </h2>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-wrap">
                 <button id="refreshBtn" class="btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-semibold text-sm">
                   <i class="fa-solid fa-rotate-right mr-1"></i> Refresh Data
                 </button>
@@ -400,7 +401,7 @@
               <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
                 <i class="fa-solid fa-calendar-days text-indigo-600"></i> Filter Rekap Semester
               </h2>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-wrap">
                 <button id="refreshBtnSem" class="btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-semibold text-sm">
                   <i class="fa-solid fa-rotate-right mr-1"></i> Refresh Data
                 </button>
@@ -506,7 +507,7 @@
                 <i class="fa-solid fa-pen-to-square text-indigo-600"></i> Edit Absensi
                 <span class="ml-2 text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Demo</span>
               </h2>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-wrap">
                 <button id="saveEditsBtn" class="btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-semibold text-sm">
                   <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Perubahan (Demo)
                 </button>
@@ -900,7 +901,7 @@
       return `
         <div class="border border-gray-200 rounded-lg p-3 sm:p-4 bg-white">
           <div class="flex flex-col gap-3">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 flex-wrap">
               <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2 py-1 rounded">${i+1}</span>
               <h4 class="font-semibold text-gray-800 text-sm sm:text-base">${s.name}</h4>
               <i class="fa-solid ${icon}"></i>
@@ -1455,5 +1456,5 @@
       loadData();
     });
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9722b3023499409e',t:'MTc1NTcwMTM4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9722d1b154b75f6f',t:'MTc1NTcwMjY0My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
