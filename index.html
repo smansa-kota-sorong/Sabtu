@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Halaman 1 • Absensi & Rekapan • Versi 26</title>
+  <title>Halaman 1 • Absensi XII-A2</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
@@ -102,8 +102,7 @@
           <div class="flex items-center gap-3">
             <i class="fa-solid fa-clipboard-check text-2xl"></i>
             <div>
-              <h1 class="text-xl sm:text-2xl font-bold">Absensi & Rekapan • Versi 26</h1>
-              <p class="text-indigo-100 text-sm">Absen harian + Rekapan dari Sheet Absen (CSV)</p>
+              <h1 class="text-xl sm:text-2xl font-bold">Absensi XII-A2</h1>
             </div>
           </div>
           <div class="flex items-center gap-3">
@@ -121,12 +120,15 @@
             </button>
           </div>
         </div>
-        <div class="mt-4 flex items-center gap-2">
+        <div class="mt-4 flex items-center gap-2 flex-wrap">
           <button id="tabAbsensi" class="nav-tab active px-4 py-2 rounded-lg font-semibold text-sm" onclick="switchTab('absen')">
             <i class="fa-solid fa-clipboard-check mr-2"></i>Absen
           </button>
           <button id="tabRekapan" class="nav-tab px-4 py-2 rounded-lg font-semibold text-sm" onclick="goToRekapan()">
             <i class="fa-solid fa-chart-pie mr-2"></i>Rekapan
+          </button>
+          <button id="tabRekapSemester" class="nav-tab px-4 py-2 rounded-lg font-semibold text-sm" onclick="switchTab('rekapSemester')">
+            <i class="fa-solid fa-calendar-range mr-2"></i>Rekapan Semester
           </button>
           <span class="ml-auto text-xs text-indigo-100 sm:hidden" id="clockMini"></span>
         </div>
@@ -141,11 +143,16 @@
           <div class="grid lg:grid-cols-2 gap-6">
             <!-- Kolom kiri: Tanggal + tombol Rekapan -->
             <div>
-              <div class="mb-3 flex items-center justify-between">
+              <div class="mb-3 flex items-center justify-between gap-2 flex-wrap">
                 <div class="text-sm text-gray-500">Navigasi cepat</div>
-                <button onclick="goToRekapan()" class="btn bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">
-                  <i class="fa-solid fa-chart-pie mr-2"></i>Rekapan
-                </button>
+                <div class="flex items-center gap-2">
+                  <button onclick="goToRekapan()" class="btn bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">
+                    <i class="fa-solid fa-chart-pie mr-2"></i>Rekapan
+                  </button>
+                  <button onclick="switchTab('rekapSemester')" class="btn bg-indigo-700 hover:bg-indigo-800 text-white px-4 py-2 rounded-lg text-sm font-semibold">
+                    <i class="fa-solid fa-calendar-range mr-2"></i>Rekapan Semester
+                  </button>
+                </div>
               </div>
 
               <h3 class="font-semibold text-gray-800 mb-3 flex items-center">
@@ -247,7 +254,7 @@
         </section>
 
         <!-- Statistik singkat -->
-        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
           <div class="card rounded-lg p-4 text-center">
             <div class="text-sm text-gray-600 mb-1">Total Siswa</div>
             <div id="totalCount" class="text-2xl font-extrabold text-gray-800">0</div>
@@ -259,6 +266,22 @@
           <div class="card rounded-lg p-4 text-center">
             <div class="text-sm text-pink-700 mb-1">Perempuan</div>
             <div id="femaleCount" class="text-2xl font-extrabold text-pink-700">0</div>
+          </div>
+          <div class="card rounded-lg p-4 text-center">
+            <div class="text-sm text-emerald-700 mb-1">Islam</div>
+            <div class="text-2xl font-extrabold text-emerald-700">11</div>
+            <div class="mt-2 text-xs text-gray-600 flex items-center justify-center gap-3">
+              <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-500 inline-block"></span>Laki-Laki: <span class="font-semibold text-gray-800">5</span></span>
+              <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-pink-500 inline-block"></span>Perempuan: <span class="font-semibold text-gray-800">6</span></span>
+            </div>
+          </div>
+          <div class="card rounded-lg p-4 text-center">
+            <div class="text-sm text-violet-700 mb-1">Protestan</div>
+            <div class="text-2xl font-extrabold text-violet-700">25</div>
+            <div class="mt-2 text-xs text-gray-600 flex items-center justify-center gap-3">
+              <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-500 inline-block"></span>Laki-Laki: <span class="font-semibold text-gray-800">9</span></span>
+              <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-pink-500 inline-block"></span>Perempuan: <span class="font-semibold text-gray-800">16</span></span>
+            </div>
           </div>
         </section>
 
@@ -279,10 +302,9 @@
         <div id="errorMessage" class="hidden bg-rose-100 border border-rose-300 text-rose-800 px-4 py-3 rounded-xl mb-8 text-center max-w-2xl mx-auto"></div>
       </section>
 
-      <!-- SECTION: REKAPAN -->
+      <!-- SECTION: REKAPAN (satu tanggal) -->
       <section id="sectionRekap" class="hidden-section app-bg-2 rounded-2xl p-0">
         <div class="p-5 sm:p-7">
-          <!-- Filter -->
           <section class="card rounded-2xl p-5 sm:p-7 mb-6">
             <div class="flex items-center justify-between gap-4 flex-wrap mb-4">
               <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
@@ -297,12 +319,8 @@
 
             <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
               <div>
-                <label class="text-sm font-semibold text-gray-700 mb-2 block">Tanggal Mulai</label>
-                <input id="startDate" type="date" class="w-full rounded-lg border border-indigo-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none p-2.5 text-gray-700">
-              </div>
-              <div>
-                <label class="text-sm font-semibold text-gray-700 mb-2 block">Tanggal Selesai</label>
-                <input id="endDate" type="date" class="w-full rounded-lg border border-indigo-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none p-2.5 text-gray-700">
+                <label class="text-sm font-semibold text-gray-700 mb-2 block">Tanggal</label>
+                <input id="rekapDate" type="date" class="w-full rounded-lg border border-indigo-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none p-2.5 text-gray-700">
               </div>
               <div>
                 <label class="text-sm font-semibold text-gray-700 mb-2 block">Jam ke / Bimbel</label>
@@ -321,7 +339,7 @@
                   <option>Bolos</option>
                 </select>
               </div>
-              <div class="md:col-span-2 lg:col-span-2">
+              <div class="md:col-span-2 lg:col-span-1">
                 <label class="text-sm font-semibold text-gray-700 mb-2 block">Cari Nama</label>
                 <div class="relative">
                   <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-indigo-500"><i class="fa-solid fa-magnifying-glass"></i></span>
@@ -331,39 +349,19 @@
             </div>
 
             <div id="infoBar" class="mt-4 text-sm text-gray-600">
-              Menampilkan <span id="matchCount" class="font-semibold text-indigo-700">0</span> baris dari <span id="totalCountRows" class="font-semibold">0</span> data.
+              Menampilkan <span id="matchCount" class="font-semibold text-indigo-700">0</span> baris.
             </div>
           </section>
 
-          <!-- Ringkasan -->
           <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
-            <div class="card rounded-xl p-4 text-center">
-              <div class="text-sm text-gray-600 mb-1">Hadir</div>
-              <div id="sumHadir" class="text-2xl font-extrabold text-emerald-700">0</div>
-            </div>
-            <div class="card rounded-xl p-4 text-center">
-              <div class="text-sm text-gray-600 mb-1">Sakit</div>
-              <div id="sumSakit" class="text-2xl font-extrabold text-amber-700">0</div>
-            </div>
-            <div class="card rounded-xl p-4 text-center">
-              <div class="text-sm text-gray-600 mb-1">Izin</div>
-              <div id="sumIzin" class="text-2xl font-extrabold text-indigo-700">0</div>
-            </div>
-            <div class="card rounded-xl p-4 text-center">
-              <div class="text-sm text-gray-600 mb-1">Alpa</div>
-              <div id="sumAlpa" class="text-2xl font-extrabold text-rose-700">0</div>
-            </div>
-            <div class="card rounded-xl p-4 text-center">
-              <div class="text-sm text-gray-600 mb-1">Bolos</div>
-              <div id="sumBolos" class="text-2xl font-extrabold text-fuchsia-700">0</div>
-            </div>
-            <div class="card rounded-xl p-4 text-center">
-              <div class="text-sm text-gray-600 mb-1">Total</div>
-              <div id="sumTotal" class="text-2xl font-extrabold text-gray-800">0</div>
-            </div>
+            <div class="card rounded-xl p-4 text-center"><div class="text-sm text-gray-600 mb-1">Hadir</div><div id="sumHadir" class="text-2xl font-extrabold text-emerald-700">0</div></div>
+            <div class="card rounded-xl p-4 text-center"><div class="text-sm text-gray-600 mb-1">Sakit</div><div id="sumSakit" class="text-2xl font-extrabold text-amber-700">0</div></div>
+            <div class="card rounded-xl p-4 text-center"><div class="text-sm text-gray-600 mb-1">Izin</div><div id="sumIzin" class="text-2xl font-extrabold text-indigo-700">0</div></div>
+            <div class="card rounded-xl p-4 text-center"><div class="text-sm text-gray-600 mb-1">Alpa</div><div id="sumAlpa" class="text-2xl font-extrabold text-rose-700">0</div></div>
+            <div class="card rounded-xl p-4 text-center"><div class="text-sm text-gray-600 mb-1">Bolos</div><div id="sumBolos" class="text-2xl font-extrabold text-fuchsia-700">0</div></div>
+            <div class="card rounded-xl p-4 text-center"><div class="text-sm text-gray-600 mb-1">Total</div><div id="sumTotal" class="text-2xl font-extrabold text-gray-800">0</div></div>
           </section>
 
-          <!-- Tabel -->
           <section class="card rounded-2xl p-5 sm:p-7">
             <div class="flex items-center justify-between gap-4 flex-wrap mb-4">
               <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
@@ -404,6 +402,111 @@
           </section>
         </div>
       </section>
+
+      <!-- SECTION: REKAPAN SEMESTER (rentang tanggal) -->
+      <section id="sectionRekapSemester" class="hidden-section app-bg-2 rounded-2xl p-0">
+        <div class="p-5 sm:p-7">
+          <section class="card rounded-2xl p-5 sm:p-7 mb-6">
+            <div class="flex items-center justify-between gap-4 flex-wrap mb-4">
+              <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                <i class="fa-solid fa-calendar-range text-indigo-600"></i> Filter Rekap Semester
+              </h2>
+              <div class="flex items-center gap-2">
+                <button id="refreshBtnSem" class="btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-semibold text-sm">
+                  <i class="fa-solid fa-rotate-right mr-1"></i> Refresh Data
+                </button>
+              </div>
+            </div>
+
+            <div class="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-1 gap-4">
+              <div>
+                <label class="text-sm font-semibold text-gray-700 mb-2 block">Tanggal Mulai</label>
+                <input id="semStartDate" type="date" class="w-full rounded-lg border border-indigo-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none p-2.5 text-gray-700">
+              </div>
+              <div>
+                <label class="text-sm font-semibold text-gray-700 mb-2 block">Tanggal Selesai</label>
+                <input id="semEndDate" type="date" class="w-full rounded-lg border border-indigo-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none p-2.5 text-gray-700">
+              </div>
+              <div>
+                <label class="text-sm font-semibold text-gray-700 mb-2 block">Jam ke / Bimbel</label>
+                <select id="jamFilterSem" class="w-full rounded-lg border border-indigo-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none p-2.5 text-gray-700">
+                  <option value="">Semua</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-sm font-semibold text-gray-700 mb-2 block">Status</label>
+                <select id="statusFilterSem" class="w-full rounded-lg border border-indigo-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none p-2.5 text-gray-700">
+                  <option value="">Semua</option>
+                  <option>Hadir</option>
+                  <option>Sakit</option>
+                  <option>Izin</option>
+                  <option>Alpa</option>
+                  <option>Bolos</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-sm font-semibold text-gray-700 mb-2 block">Cari Nama</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-indigo-500"><i class="fa-solid fa-magnifying-glass"></i></span>
+                  <input id="searchNameSem" type="text" placeholder="Ketik sebagian nama..." class="w-full pl-10 rounded-lg border border-indigo-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none p-2.5 text-gray-700">
+                </div>
+              </div>
+            </div>
+
+            <div id="infoBarSem" class="mt-4 text-sm text-gray-600">
+              Menampilkan <span id="matchCountSem" class="font-semibold text-indigo-700">0</span> baris.
+            </div>
+          </section>
+
+          <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="card rounded-xl p-4 text-center"><div class="text-sm text-gray-600 mb-1">Hadir</div><div id="sumHadirSem" class="text-2xl font-extrabold text-emerald-700">0</div></div>
+            <div class="card rounded-xl p-4 text-center"><div class="text-sm text-gray-600 mb-1">Sakit</div><div id="sumSakitSem" class="text-2xl font-extrabold text-amber-700">0</div></div>
+            <div class="card rounded-xl p-4 text-center"><div class="text-sm text-gray-600 mb-1">Izin</div><div id="sumIzinSem" class="text-2xl font-extrabold text-indigo-700">0</div></div>
+            <div class="card rounded-xl p-4 text-center"><div class="text-sm text-gray-600 mb-1">Alpa</div><div id="sumAlpaSem" class="text-2xl font-extrabold text-rose-700">0</div></div>
+            <div class="card rounded-xl p-4 text-center"><div class="text-sm text-gray-600 mb-1">Bolos</div><div id="sumBolosSem" class="text-2xl font-extrabold text-fuchsia-700">0</div></div>
+            <div class="card rounded-xl p-4 text-center"><div class="text-sm text-gray-600 mb-1">Total</div><div id="sumTotalSem" class="text-2xl font-extrabold text-gray-800">0</div></div>
+          </section>
+
+          <section class="card rounded-2xl p-5 sm:p-7">
+            <div class="flex items-center justify-between gap-4 flex-wrap mb-4">
+              <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                <i class="fa-solid fa-table-list text-indigo-600"></i> Rekap Semester per Nama
+              </h2>
+              <button id="exportBtnSem" class="btn bg-slate-700 hover:bg-slate-800 text-white px-4 py-2 rounded-lg font-semibold text-sm">
+                <i class="fa-solid fa-file-arrow-down mr-1"></i> Unduh CSV Rekap Semester
+              </button>
+            </div>
+
+            <div class="table-wrap border rounded-xl">
+              <table class="min-w-full text-sm">
+                <thead>
+                  <tr class="th-sticky border-b">
+                    <th class="text-left px-4 py-3 font-semibold text-gray-700">No.</th>
+                    <th class="text-left px-4 py-3 font-semibold text-gray-700">Nama Lengkap</th>
+                    <th class="text-center px-4 py-3 font-semibold text-gray-700">Hadir</th>
+                    <th class="text-center px-4 py-3 font-semibold text-gray-700">Sakit</th>
+                    <th class="text-center px-4 py-3 font-semibold text-gray-700">Izin</th>
+                    <th class="text-center px-4 py-3 font-semibold text-gray-700">Alpa</th>
+                    <th class="text-center px-4 py-3 font-semibold text-gray-700">Bolos</th>
+                    <th class="text-center px-4 py-3 font-semibold text-gray-700">Total</th>
+                  </tr>
+                </thead>
+                <tbody id="rekapBodySem" class="divide-y"></tbody>
+              </table>
+            </div>
+
+            <div id="loadingBoxSem" class="hidden items-center gap-2 text-indigo-700 mt-4">
+              <i class="fa-solid fa-spinner spin"></i> Memuat data...
+            </div>
+            <div id="errorBoxSem" class="hidden mt-4 p-3 rounded-lg border bg-rose-50 border-rose-300 text-rose-800">
+              <i class="fa-solid fa-triangle-exclamation mr-1"></i> Gagal memuat data. Coba klik Refresh.
+            </div>
+            <div id="emptyBoxSem" class="hidden mt-4 p-3 rounded-lg border bg-amber-50 border-amber-300 text-amber-800">
+              Tidak ada data sesuai filter.
+            </div>
+          </section>
+        </div>
+      </section>
     </main>
 
     <footer class="text-center text-gray-600 py-10">
@@ -417,9 +520,7 @@
     const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQOMwwK9rdcEfJ_vQvYMRZmTJMLsSyDvOVn5c-DU-Id4HDkwSzdTChFUqMrWH69WNwhtfqkilp8ZgrS/pub?gid=1872719135&single=true&output=csv';
 
     // Ganti ini ke link CSV sheet "Login" kamu (Publish to web -> CSV).
-    // Struktur kolom minimal: Username | Password | Role | Role Halaman
-    // Password diabaikan di halaman ini (tidak dipakai).
-    let LOGIN_CSV_URL = ''; // contoh: 'https://docs.google.com/spreadsheets/.../pub?gid=XXXXX&single=true&output=csv'
+    let LOGIN_CSV_URL = ''; 
     // ================================================
 
     // ================== Gate (Pilih Petugas) ==================
@@ -445,7 +546,6 @@
       appContent.classList.remove('hidden');
       sessionStorage.setItem('enteredV26', '1');
       if (rememberDevice) localStorage.setItem('enteredV26Remember', '1');
-      // tampilkan identitas pengguna
       if (currentUser) {
         whoBox.classList.remove('hidden');
         whoName.textContent = currentUser.Username || currentUser['Nama'] || '(Tanpa Nama)';
@@ -482,19 +582,6 @@
       });
     }
 
-    function normLoginRow(o){
-      const out = {};
-      Object.keys(o).forEach(k=>{
-        const key = k.toLowerCase();
-        if (key.includes('username') || key.includes('nama')) out['Username'] = o[k];
-        else if (key.includes('password') || key === 'pass') out['Password'] = o[k];
-        else if (key.includes('role halaman') || key.includes('halaman')) out['Role Halaman'] = o[k];
-        else if (key.includes('role')) out['Role'] = o[k];
-        else out[k] = o[k];
-      });
-      return out;
-    }
-
     async function loadLoginList(){
       enterBtn.disabled = true;
       userSelect.innerHTML = '<option value="">-- Pilih nama --</option>';
@@ -503,7 +590,6 @@
 
       try {
         if (!LOGIN_CSV_URL) {
-          // Demo jika belum diisi
           loginRows = [
             { 'Username':'Guru A', 'Password':'(diabaikan)', 'Role':'Guru', 'Role Halaman':'Halaman 1' },
             { 'Username':'Wali Kelas', 'Password':'(diabaikan)', 'Role':'Wali', 'Role Halaman':'Halaman 1' },
@@ -518,8 +604,6 @@
           loginRows = parseCSV(text).map(normLoginRow).filter(r => (r['Username']||'').trim() !== '');
           gateInfo.innerHTML = 'Daftar petugas berhasil dimuat.';
         }
-
-        // isi dropdown
         userSelect.innerHTML = '<option value="">-- Pilih nama --</option>' +
           loginRows.map((r,i)=>`<option value="${i}">${r['Username']}</option>`).join('');
       } catch(e){
@@ -528,13 +612,25 @@
       }
     }
 
+    function normLoginRow(o){
+      const out = {};
+      Object.keys(o).forEach(k=>{
+        const key = k.toLowerCase();
+        if (key.includes('username') || key.includes('nama')) out['Username'] = o[k];
+        else if (key.includes('password') || key === 'pass') out['Password'] = o[k];
+        else if (key.includes('role halaman') || key.includes('halaman')) out['Role Halaman'] = o[k];
+        else if (key.includes('role')) out['Role'] = o[k];
+        else out[k] = o[k];
+      });
+      return out;
+    }
+
     userSelect.addEventListener('change', ()=>{
       const idx = userSelect.value;
       if (idx === '') { rolePreview.textContent='-'; pagePreview.textContent='-'; enterBtn.disabled = true; return; }
       const row = loginRows[Number(idx)];
       rolePreview.textContent = row['Role'] || '-';
       pagePreview.textContent = row['Role Halaman'] || '-';
-      // Validasi halaman
       const allowed = (row['Role Halaman']||'').toLowerCase().includes('halaman 1') || (row['Role Halaman']||'').trim()==='';
       enterBtn.disabled = !allowed;
       if (!allowed) {
@@ -570,18 +666,26 @@
       const mini = document.getElementById('clockMini'); if (mini) mini.textContent = `${dateStr} ${timeStr}`;
     }
 
-    // ================== Tabs & Rekapan jump ==================
+    // ================== Tabs & Navigation ==================
     function switchTab(which){
       const absenBtn = document.getElementById('tabAbsensi');
       const rekapBtn = document.getElementById('tabRekapan');
+      const semBtn = document.getElementById('tabRekapSemester');
       const absen = document.getElementById('sectionAbsen');
       const rekap = document.getElementById('sectionRekap');
+      const rekapSem = document.getElementById('sectionRekapSemester');
+
+      const setActive = (btn, on) => { if (!btn) return; btn.classList.toggle('active', !!on); };
+
       if (which === 'absen'){
-        absenBtn.classList.add('active'); rekapBtn.classList.remove('active');
-        absen.classList.remove('hidden-section'); rekap.classList.add('hidden-section');
+        setActive(absenBtn, true); setActive(rekapBtn, false); setActive(semBtn, false);
+        absen.classList.remove('hidden-section'); rekap.classList.add('hidden-section'); rekapSem.classList.add('hidden-section');
+      } else if (which === 'rekap'){
+        setActive(absenBtn, false); setActive(rekapBtn, true); setActive(semBtn, false);
+        rekap.classList.remove('hidden-section'); absen.classList.add('hidden-section'); rekapSem.classList.add('hidden-section');
       } else {
-        absenBtn.classList.remove('active'); rekapBtn.classList.add('active');
-        rekap.classList.remove('hidden-section'); absen.classList.add('hidden-section');
+        setActive(absenBtn, false); setActive(rekapBtn, false); setActive(semBtn, true);
+        rekapSem.classList.remove('hidden-section'); absen.classList.add('hidden-section'); rekap.classList.add('hidden-section');
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -590,13 +694,12 @@
       const chosen = selectedDate;
       switchTab('rekap');
       const setFilter = () => {
-        const sInput = document.getElementById('startDate');
-        const eInput = document.getElementById('endDate');
+        const dInput = document.getElementById('rekapDate');
         if (chosen){
-          sInput.value = chosen; eInput.value = chosen;
+          dInput.value = chosen;
           applyFilters();
         } else {
-          setTimeout(()=> sInput.focus(), 150);
+          setTimeout(()=> dInput.focus(), 150);
         }
       };
       if (rawRows.length === 0) {
@@ -606,7 +709,7 @@
       }
     }
 
-    // ================== Absensi (Versi 26) ==================
+    // ================== Absensi ==================
     let selectedDate = null;
     let currentSchedule = null;
 
@@ -777,7 +880,6 @@
         err.innerHTML = '<i class="fa-solid fa-circle-exclamation mr-2"></i>Pilih Jam ke / Bimbel dahulu.'; err.classList.remove('hidden'); err.scrollIntoView({behavior:'smooth'}); return;
       }
 
-      // Cegah kiriman ganda (per perangkat)
       const pairKey = `${selectedDate}__${currentSchedule}`;
       const sentPairs = JSON.parse(localStorage.getItem('sentPairs')||'[]');
       if (sentPairs.includes(pairKey)){
@@ -820,7 +922,7 @@
       }
     }
 
-    // ================== Rekapan (CSV) ==================
+    // ================== Rekapan Harian (satu tanggal) ==================
     let rawRows = [];
     let filteredRows = [];
     let rekapPerNama = [];
@@ -847,29 +949,29 @@
     }
 
     function fillJamOptions(list) {
-      const sel = document.getElementById('jamFilter');
       const jams = Array.from(new Set(list.map(r => r['Jam ke']).filter(Boolean))).sort((a,b)=>a.localeCompare(b, 'id'));
-      sel.innerHTML = '<option value="">Semua</option>' + jams.map(j => `<option>${j}</option>`).join('');
+      const sel1 = document.getElementById('jamFilter');
+      const sel2 = document.getElementById('jamFilterSem');
+      if (sel1) sel1.innerHTML = '<option value="">Semua</option>' + jams.map(j => `<option>${j}</option>`).join('');
+      if (sel2) sel2.innerHTML = '<option value="">Semua</option>' + jams.map(j => `<option>${j}</option>`).join('');
     }
 
     function applyFilters() {
-      const sDate = document.getElementById('startDate').value;
-      const eDate = document.getElementById('endDate').value;
+      const d = document.getElementById('rekapDate').value;
       const jam = document.getElementById('jamFilter').value;
       const status = document.getElementById('statusFilter').value;
       const q = (document.getElementById('searchName').value || '').toLowerCase().trim();
 
       filteredRows = rawRows.filter(r => {
-        if (sDate && (r['Tanggal'] || '') < sDate) return false;
-        if (eDate && (r['Tanggal'] || '') > eDate) return false;
+        if (d && (r['Tanggal'] || '') !== d) return false;
         if (jam && (r['Jam ke'] || '') !== jam) return false;
         if (status && (r['Keterangan'] || '') !== status) return false;
         if (q && !(r['Nama Lengkap'] || '').toLowerCase().includes(q)) return false;
         return true;
       });
 
-      document.getElementById('matchCount').textContent = filteredRows.length.toString();
-      document.getElementById('totalCountRows').textContent = rawRows.length.toString();
+      const matchEl = document.getElementById('matchCount');
+      if (matchEl) matchEl.textContent = filteredRows.length.toString();
 
       aggregatePerNama();
       renderRekapTable();
@@ -938,11 +1040,111 @@
       a.remove(); URL.revokeObjectURL(url);
     }
 
+    // ================== Rekapan Semester (rentang tanggal) ==================
+    let filteredRowsSem = [];
+    let rekapPerNamaSem = [];
+
+    function applySemesterFilters() {
+      const sDate = document.getElementById('semStartDate').value;
+      const eDate = document.getElementById('semEndDate').value;
+      const jam = document.getElementById('jamFilterSem').value;
+      const status = document.getElementById('statusFilterSem').value;
+      const q = (document.getElementById('searchNameSem').value || '').toLowerCase().trim();
+
+      filteredRowsSem = rawRows.filter(r => {
+        const t = (r['Tanggal'] || '');
+        if (sDate && t < sDate) return false;
+        if (eDate && t > eDate) return false;
+        if (jam && (r['Jam ke'] || '') !== jam) return false;
+        if (status && (r['Keterangan'] || '') !== status) return false;
+        if (q && !(r['Nama Lengkap'] || '').toLowerCase().includes(q)) return false;
+        return true;
+      });
+
+      document.getElementById('matchCountSem').textContent = filteredRowsSem.length.toString();
+
+      aggregatePerNamaSem();
+      renderRekapTableSem();
+      renderSummarySem();
+      document.getElementById('emptyBoxSem').classList.toggle('hidden', filteredRowsSem.length !== 0);
+    }
+
+    function aggregatePerNamaSem() {
+      const map = new Map();
+      const statuses = ['Hadir','Sakit','Izin','Alpa','Bolos'];
+      filteredRowsSem.forEach(r => {
+        const nama = r['Nama Lengkap'] || '(Tanpa Nama)';
+        const st = r['Keterangan'] || '';
+        if (!map.has(nama)) map.set(nama, { Nama:nama, Hadir:0,Sakit:0,Izin:0,Alpa:0,Bolos:0, Total:0 });
+        const item = map.get(nama);
+        if (statuses.includes(st)) item[st] += 1;
+        item.Total += 1;
+      });
+      rekapPerNamaSem = Array.from(map.values()).sort((a,b)=> a.Nama.localeCompare(b.Nama,'id'));
+    }
+
+    function renderSummarySem() {
+      const sum = {Hadir:0,Sakit:0,Izin:0,Alpa:0,Bolos:0};
+      filteredRowsSem.forEach(r => { const st = r['Keterangan']; if (sum.hasOwnProperty(st)) sum[st] += 1; });
+      document.getElementById('sumHadirSem').textContent = sum.Hadir;
+      document.getElementById('sumSakitSem').textContent = sum.Sakit;
+      document.getElementById('sumIzinSem').textContent = sum.Izin;
+      document.getElementById('sumAlpaSem').textContent = sum.Alpa;
+      document.getElementById('sumBolosSem').textContent = sum.Bolos;
+      document.getElementById('sumTotalSem').textContent = filteredRowsSem.length;
+    }
+
+    function renderRekapTableSem() {
+      const tb = document.getElementById('rekapBodySem');
+      tb.innerHTML = rekapPerNamaSem.map((r, i) => `
+        <tr class="hover:bg-slate-50">
+          <td class="px-4 py-3 text-gray-700">${i+1}</td>
+          <td class="px-4 py-3 font-semibold text-gray-800">${r.Nama}</td>
+          <td class="px-4 py-3 text-center"><span class="badge badge-Hadir"><span class="status-dot" style="background:#16a34a"></span>${r.Hadir}</span></td>
+          <td class="px-4 py-3 text-center"><span class="badge badge-Sakit"><span class="status-dot" style="background:#ca8a04"></span>${r.Sakit}</span></td>
+          <td class="px-4 py-3 text-center"><span class="badge badge-Izin"><span class="status-dot" style="background:#4f46e5"></span>${r.Izin}</span></td>
+          <td class="px-4 py-3 text-center"><span class="badge badge-Alpa"><span class="status-dot" style="background:#e11d48"></span>${r.Alpa}</span></td>
+          <td class="px-4 py-3 text-center"><span class="badge badge-Bolos"><span class="status-dot" style="background:#a21caf"></span>${r.Bolos}</span></td>
+          <td class="px-4 py-3 text-center font-bold text-gray-900">${r.Total}</td>
+        </tr>
+      `).join('');
+    }
+
+    function exportRekapCSVSem() {
+      const header = ['No.','Nama Lengkap','Hadir','Sakit','Izin','Alpa','Bolos','Total'];
+      const lines = [header.join(',')];
+      rekapPerNamaSem.forEach((r, i) => {
+        const row = [i+1, r.Nama, r.Hadir, r.Sakit, r.Izin, r.Alpa, r.Bolos, r.Total]
+          .map(v => {
+            const s = String(v ?? '');
+            return (s.includes(',') || s.includes('"') || s.includes('\n')) ? '"' + s.replace(/"/g,'""') + '"' : s;
+          })
+          .join(',');
+        lines.push(row);
+      });
+      const blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'rekap_absen_per_nama_semester.csv';
+      document.body.appendChild(a); a.click();
+      a.remove(); URL.revokeObjectURL(url);
+    }
+
+    // ================== Load Data (shared) ==================
     async function loadData() {
-      const loading = document.getElementById('loadingBox');
-      const err = document.getElementById('errorBox');
-      const empty = document.getElementById('emptyBox');
-      if (loading) loading.classList.remove('hidden'); if (err) err.classList.add('hidden'); if (empty) empty.classList.add('hidden');
+      const loading1 = document.getElementById('loadingBox');
+      const err1 = document.getElementById('errorBox');
+      const empty1 = document.getElementById('emptyBox');
+
+      const loading2 = document.getElementById('loadingBoxSem');
+      const err2 = document.getElementById('errorBoxSem');
+      const empty2 = document.getElementById('emptyBoxSem');
+
+      if (loading1) loading1.classList.remove('hidden');
+      if (loading2) loading2.classList.remove('hidden');
+      if (err1) err1.classList.add('hidden'); if (empty1) empty1.classList.add('hidden');
+      if (err2) err2.classList.add('hidden'); if (empty2) empty2.classList.add('hidden');
+
       try {
         const res = await fetch(CSV_URL, { cache: 'no-store' });
         if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -951,26 +1153,36 @@
         rawRows = parsed.filter(r => (r['Nama Lengkap']||'').trim() !== '');
         filteredRows = rawRows.slice();
         fillJamOptions(rawRows);
+
+        // Set default tanggal untuk Rekapan harian (terbaru)
         const dates = rawRows.map(r => r['Tanggal']).filter(Boolean).sort();
+        const dInput = document.getElementById('rekapDate');
+        if (dates.length && dInput && !dInput.value) dInput.value = dates[dates.length-1];
+
+        // Set default rentang semester (min - max)
+        const sInput = document.getElementById('semStartDate');
+        const eInput = document.getElementById('semEndDate');
         if (dates.length) {
-          const minD = dates[0], maxD = dates[dates.length-1];
-          const sInput = document.getElementById('startDate');
-          const eInput = document.getElementById('endDate');
-          if (sInput && !sInput.value) sInput.value = minD;
-          if (eInput && !eInput.value) eInput.value = maxD;
+          if (sInput && !sInput.value) sInput.value = dates[0];
+          if (eInput && !eInput.value) eInput.value = dates[dates.length-1];
         }
+
         applyFilters();
-        if (loading) loading.classList.add('hidden');
+        applySemesterFilters();
+
+        if (loading1) loading1.classList.add('hidden');
+        if (loading2) loading2.classList.add('hidden');
       } catch (e) {
-        if (loading) loading.classList.add('hidden');
-        if (err) err.classList.remove('hidden');
+        if (loading1) loading1.classList.add('hidden');
+        if (loading2) loading2.classList.add('hidden');
+        if (err1) err1.classList.remove('hidden');
+        if (err2) err2.classList.remove('hidden');
         console.error(e);
       }
     }
 
     // ================== Init ==================
     document.addEventListener('DOMContentLoaded', () => {
-      // Restore sesi
       const remembered = localStorage.getItem('enteredV26Remember') === '1';
       const inSession = sessionStorage.getItem('enteredV26') === '1';
       if (remembered || inSession) {
@@ -978,7 +1190,6 @@
         showApp();
       }
 
-      // Gate
       loadLoginList();
       document.getElementById('exitBtn').addEventListener('click', () => {
         localStorage.removeItem('enteredV26Remember');
@@ -992,643 +1203,36 @@
         }
       });
 
-      // Header clock
       updateNow(); setInterval(updateNow, 1000);
 
-      // Absensi
       setToday();
       renderStudents();
 
-      // Rekapan events
-      document.getElementById('startDate').addEventListener('change', applyFilters);
-      document.getElementById('endDate').addEventListener('change', applyFilters);
+      // Rekapan Harian events
+      document.getElementById('rekapDate').addEventListener('change', applyFilters);
       document.getElementById('jamFilter').addEventListener('change', applyFilters);
       document.getElementById('statusFilter').addEventListener('change', applyFilters);
       document.getElementById('searchName').addEventListener('input', () => {
-        clearTimeout(window.__searchTimer);
-        window.__searchTimer = setTimeout(applyFilters, 200);
+        clearTimeout(window.__searchTimer1);
+        window.__searchTimer1 = setTimeout(applyFilters, 200);
       });
       document.getElementById('refreshBtn').addEventListener('click', loadData);
       document.getElementById('exportBtn').addEventListener('click', exportRekapCSV);
+
+      // Rekapan Semester events
+      document.getElementById('semStartDate').addEventListener('change', applySemesterFilters);
+      document.getElementById('semEndDate').addEventListener('change', applySemesterFilters);
+      document.getElementById('jamFilterSem').addEventListener('change', applySemesterFilters);
+      document.getElementById('statusFilterSem').addEventListener('change', applySemesterFilters);
+      document.getElementById('searchNameSem').addEventListener('input', () => {
+        clearTimeout(window.__searchTimer2);
+        window.__searchTimer2 = setTimeout(applySemesterFilters, 200);
+      });
+      document.getElementById('refreshBtnSem').addEventListener('click', loadData);
+      document.getElementById('exportBtnSem').addEventListener('click', exportRekapCSVSem);
+
       loadData();
     });
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'971cd0b81425408c',t:'MTc1NTYzOTY4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
-</html>
-                            <div class="flex-1">
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <i class="fas fa-calendar-alt text-blue-500 text-lg"></i>
-                                    </div>
-                                    <input type="date" id="attendanceDate" 
-                                           class="w-full pl-10 pr-4 py-3 border border-blue-300 rounded-lg text-sm font-medium text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all shadow-sm hover:shadow-md" 
-                                           onchange="updateSelectedDate()">
-                                </div>
-                            </div>
-                            
-                            <!-- Quick Actions -->
-                            <div class="flex flex-wrap gap-2">
-                                <button onclick="setToday()" class="btn-hover bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
-                                    <i class="fas fa-calendar-day mr-2"></i>Hari Ini
-                                </button>
-                                <button onclick="setYesterday()" class="btn-hover bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
-                                    <i class="fas fa-arrow-left mr-2"></i>Kemarin
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Selected Date Display -->
-                        <div class="mt-4 p-3 bg-white rounded-lg border border-blue-200 shadow-sm">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <i class="fas fa-info-circle text-blue-600 mr-2"></i>
-                                    <span class="text-sm text-gray-600">Tanggal Terpilih:</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span id="selectedDateDisplay" class="font-semibold text-blue-700 text-sm">Belum dipilih</span>
-                                    <span id="dateStatus" class="ml-2 px-2 py-1 text-xs font-medium rounded-full"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Regular Class Hours -->
-                <div class="mb-4">
-                    <h4 class="text-sm font-medium text-gray-600 mb-3">Jam Pelajaran Regular</h4>
-                    <div class="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-2">
-                        <button onclick="selectSchedule('jam1')" id="jam1" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
-                            <i class="fas fa-clock mr-1"></i>Jam 1
-                        </button>
-                        <button onclick="selectSchedule('jam2')" id="jam2" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
-                            <i class="fas fa-clock mr-1"></i>Jam 2
-                        </button>
-                        <button onclick="selectSchedule('jam3')" id="jam3" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
-                            <i class="fas fa-clock mr-1"></i>Jam 3
-                        </button>
-                        <button onclick="selectSchedule('jam4')" id="jam4" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
-                            <i class="fas fa-clock mr-1"></i>Jam 4
-                        </button>
-                        <button onclick="selectSchedule('jam5')" id="jam5" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
-                            <i class="fas fa-clock mr-1"></i>Jam 5
-                        </button>
-                        <button onclick="selectSchedule('jam6')" id="jam6" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
-                            <i class="fas fa-clock mr-1"></i>Jam 6
-                        </button>
-                        <button onclick="selectSchedule('jam7')" id="jam7" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
-                            <i class="fas fa-clock mr-1"></i>Jam 7
-                        </button>
-                        <button onclick="selectSchedule('jam8')" id="jam8" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
-                            <i class="fas fa-clock mr-1"></i>Jam 8
-                        </button>
-                        <button onclick="selectSchedule('jam9')" id="jam9" class="schedule-btn bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
-                            <i class="fas fa-clock mr-1"></i>Jam 9
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Tutoring Hours -->
-                <div>
-                    <h4 class="text-sm font-medium text-gray-600 mb-3">Jam Bimbel</h4>
-                    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-2 max-w-md">
-                        <button onclick="selectSchedule('bimbel1')" id="bimbel1" class="schedule-btn bg-purple-100 hover:bg-purple-200 text-purple-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
-                            <i class="fas fa-graduation-cap mr-1"></i>Bimbel 1
-                        </button>
-                        <button onclick="selectSchedule('bimbel2')" id="bimbel2" class="schedule-btn bg-purple-100 hover:bg-purple-200 text-purple-800 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all">
-                            <i class="fas fa-graduation-cap mr-1"></i>Bimbel 2
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Selected Schedule Display -->
-                <div class="mt-4 p-3 bg-gray-50 rounded-lg">
-                    <p class="text-sm text-gray-600">
-                        <i class="fas fa-info-circle mr-2"></i>
-                        Jadwal Terpilih: <span id="selectedSchedule" class="font-semibold text-blue-600">Belum dipilih</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Students List -->
-        <div class="bg-white rounded-xl card-shadow p-4 sm:p-6 mb-6 sm:mb-8 fade-in">
-            <div class="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6 space-y-4 sm:space-y-0">
-                <h3 class="text-lg sm:text-xl font-semibold text-gray-800 text-center sm:text-left">
-                    <i class="fas fa-users mr-2"></i>
-                    <span class="block sm:inline">Daftar Siswa</span>
-                    <span class="text-sm sm:text-base text-gray-600 block sm:inline">(36 Siswa)</span>
-                </h3>
-                <button onclick="markAllPresent()" class="btn-hover bg-green-600 hover:bg-green-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base w-full sm:w-auto">
-                    <i class="fas fa-check-double mr-2"></i>
-                    Hadir Semua
-                </button>
-            </div>
-            
-            <div class="grid gap-3 sm:gap-4" id="studentsList">
-                <!-- Students will be populated by JavaScript -->
-            </div>
-        </div>
-
-        <!-- Submit Button -->
-        <div class="text-center mb-6 sm:mb-8 fade-in px-4 sm:px-0">
-            <button onclick="submitAttendance()" id="submitBtn" class="btn-hover bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg w-full sm:w-auto max-w-xs sm:max-w-none">
-                <i class="fas fa-paper-plane mr-2"></i>
-                Kirim Absensi
-            </button>
-        </div>
-
-        <!-- Class Statistics -->
-        <div class="bg-white rounded-xl card-shadow p-4 sm:p-6 mb-6 sm:mb-8 fade-in">
-            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4 sm:mb-6 text-center sm:text-left">
-                <i class="fas fa-chart-bar mr-2"></i>
-                <span class="block sm:inline">Data Kelas</span>
-            </h3>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
-                    <div class="flex items-center justify-center mb-2">
-                        <i class="fas fa-users text-gray-600 text-xl mr-2"></i>
-                        <h4 class="font-semibold text-gray-800">Total Siswa</h4>
-                    </div>
-                    <p class="text-2xl font-bold text-gray-600" id="totalCount">0</p>
-                </div>
-                
-                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-                    <div class="flex items-center justify-center mb-2">
-                        <i class="fas fa-mars text-blue-600 text-xl mr-2"></i>
-                        <h4 class="font-semibold text-blue-800">Siswa Laki-Laki</h4>
-                    </div>
-                    <p class="text-2xl font-bold text-blue-600" id="maleCount">0</p>
-                </div>
-                
-                <div class="bg-pink-50 border border-pink-200 rounded-lg p-4 text-center">
-                    <div class="flex items-center justify-center mb-2">
-                        <i class="fas fa-venus text-pink-600 text-xl mr-2"></i>
-                        <h4 class="font-semibold text-pink-800">Siswa Perempuan</h4>
-                    </div>
-                    <p class="text-2xl font-bold text-pink-600" id="femaleCount">0</p>
-                </div>
-                
-                <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
-                    <div class="flex items-center justify-center mb-2">
-                        <i class="fas fa-moon text-green-600 text-xl mr-2"></i>
-                        <h4 class="font-semibold text-green-800">Total Islam</h4>
-                    </div>
-                    <p class="text-2xl font-bold text-green-600" id="islamTotalCount">0</p>
-                </div>
-                
-                <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4 text-center">
-                    <div class="flex items-center justify-center mb-2">
-                        <i class="fas fa-moon text-emerald-600 text-xl mr-2"></i>
-                        <h4 class="font-semibold text-emerald-800">Islam Laki-Laki</h4>
-                    </div>
-                    <p class="text-2xl font-bold text-emerald-600" id="islamMaleCount">0</p>
-                </div>
-                
-                <div class="bg-teal-50 border border-teal-200 rounded-lg p-4 text-center">
-                    <div class="flex items-center justify-center mb-2">
-                        <i class="fas fa-moon text-teal-600 text-xl mr-2"></i>
-                        <h4 class="font-semibold text-teal-800">Islam Perempuan</h4>
-                    </div>
-                    <p class="text-2xl font-bold text-teal-600" id="islamFemaleCount">0</p>
-                </div>
-                
-                <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 text-center">
-                    <div class="flex items-center justify-center mb-2">
-                        <i class="fas fa-cross text-purple-600 text-xl mr-2"></i>
-                        <h4 class="font-semibold text-purple-800">Total Protestan</h4>
-                    </div>
-                    <p class="text-2xl font-bold text-purple-600" id="protestantTotalCount">0</p>
-                </div>
-                
-                <div class="bg-violet-50 border border-violet-200 rounded-lg p-4 text-center">
-                    <div class="flex items-center justify-center mb-2">
-                        <i class="fas fa-cross text-violet-600 text-xl mr-2"></i>
-                        <h4 class="font-semibold text-violet-800">Protestan Laki-Laki</h4>
-                    </div>
-                    <p class="text-2xl font-bold text-violet-600" id="protestantMaleCount">0</p>
-                </div>
-                
-                <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4 text-center">
-                    <div class="flex items-center justify-center mb-2">
-                        <i class="fas fa-cross text-indigo-600 text-xl mr-2"></i>
-                        <h4 class="font-semibold text-indigo-800">Protestan Perempuan</h4>
-                    </div>
-                    <p class="text-2xl font-bold text-indigo-600" id="protestantFemaleCount">0</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Success Message -->
-        <div id="successMessage" class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4 text-center mx-4 sm:mx-0 text-sm sm:text-base">
-            <i class="fas fa-check-circle mr-2"></i>
-            <span class="block sm:inline">Absen berhasil dikirim ke Google Spreadsheet!</span>
-        </div>
-
-        <!-- Error Message -->
-        <div id="errorMessage" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4 text-center mx-4 sm:mx-0 text-sm sm:text-base">
-            <i class="fas fa-exclamation-circle mr-2"></i>
-            <span class="block sm:inline">Terjadi kesalahan saat mengirim data. Silakan coba lagi.</span>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-6 mt-12">
-        <div class="container mx-auto px-4 text-center">
-            <p class="text-sm sm:text-base">
-                © 2025 Kelas XII-A2
-            </p>
-        </div>
-    </footer>
-
-    <script>
-        // Current selected schedule and date
-        let currentSchedule = null;
-        let selectedDate = null;
-        
-        // Schedule selection function
-        function selectSchedule(scheduleId) {
-            // Remove active class from all schedule buttons
-            document.querySelectorAll('.schedule-btn').forEach(btn => {
-                btn.classList.remove('bg-blue-600', 'text-white', 'bg-purple-600');
-                if (btn.id.startsWith('jam')) {
-                    btn.classList.add('bg-blue-100', 'text-blue-800');
-                } else {
-                    btn.classList.add('bg-purple-100', 'text-purple-800');
-                }
-            });
-            
-            // Add active class to selected button
-            const selectedBtn = document.getElementById(scheduleId);
-            if (scheduleId.startsWith('jam')) {
-                selectedBtn.classList.remove('bg-blue-100', 'text-blue-800');
-                selectedBtn.classList.add('bg-blue-600', 'text-white');
-            } else {
-                selectedBtn.classList.remove('bg-purple-100', 'text-purple-800');
-                selectedBtn.classList.add('bg-purple-600', 'text-white');
-            }
-            
-            // Update current schedule
-            currentSchedule = scheduleId;
-            
-            // Update display
-            const scheduleNames = {
-                'jam1': 'Jam Pelajaran 1',
-                'jam2': 'Jam Pelajaran 2',
-                'jam3': 'Jam Pelajaran 3',
-                'jam4': 'Jam Pelajaran 4',
-                'jam5': 'Jam Pelajaran 5',
-                'jam6': 'Jam Pelajaran 6',
-                'jam7': 'Jam Pelajaran 7',
-                'jam8': 'Jam Pelajaran 8',
-                'jam9': 'Jam Pelajaran 9',
-                'bimbel1': 'Jam Bimbel 1',
-                'bimbel2': 'Jam Bimbel 2'
-            };
-            
-            document.getElementById('selectedSchedule').textContent = scheduleNames[scheduleId];
-        }
-        
-        // Set today's date
-        function setToday() {
-            const today = new Date();
-            const formattedDate = today.toISOString().split('T')[0];
-            document.getElementById('attendanceDate').value = formattedDate;
-            selectedDate = formattedDate;
-            updateSelectedDate();
-        }
-        
-        // Set yesterday's date
-        function setYesterday() {
-            const yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            const formattedDate = yesterday.toISOString().split('T')[0];
-            document.getElementById('attendanceDate').value = formattedDate;
-            selectedDate = formattedDate;
-            updateSelectedDate();
-        }
-        
-
-        
-        // Update selected date display
-        function updateSelectedDate() {
-            const dateInput = document.getElementById('attendanceDate');
-            selectedDate = dateInput.value;
-            
-            if (selectedDate) {
-                const date = new Date(selectedDate);
-                const options = { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric'
-                };
-                const formattedDate = date.toLocaleDateString('id-ID', options);
-                
-                // Update selected date display
-                document.getElementById('selectedDateDisplay').textContent = formattedDate;
-                
-                // Update date status badge
-                const today = new Date().toISOString().split('T')[0];
-                const yesterday = new Date();
-                yesterday.setDate(yesterday.getDate() - 1);
-                const yesterdayStr = yesterday.toISOString().split('T')[0];
-                
-                const dateStatus = document.getElementById('dateStatus');
-                
-                if (selectedDate === today) {
-                    dateStatus.textContent = 'Hari Ini';
-                    dateStatus.className = 'ml-2 px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800';
-                    document.getElementById('currentDate').textContent = formattedDate + ' (Hari Ini)';
-                } else if (selectedDate === yesterdayStr) {
-                    dateStatus.textContent = 'Kemarin';
-                    dateStatus.className = 'ml-2 px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800';
-                    document.getElementById('currentDate').textContent = formattedDate + ' (Kemarin)';
-                } else {
-                    const selectedDateObj = new Date(selectedDate);
-                    const todayObj = new Date();
-                    
-                    if (selectedDateObj < todayObj) {
-                        dateStatus.textContent = 'Masa Lalu';
-                        dateStatus.className = 'ml-2 px-2 py-1 text-xs font-medium rounded-full bg-orange-100 text-orange-800';
-                    } else {
-                        dateStatus.textContent = 'Masa Depan';
-                        dateStatus.className = 'ml-2 px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800';
-                    }
-                    document.getElementById('currentDate').textContent = formattedDate;
-                }
-            } else {
-                document.getElementById('selectedDateDisplay').textContent = 'Belum dipilih';
-                document.getElementById('dateStatus').textContent = '';
-                document.getElementById('dateStatus').className = 'ml-2 px-2 py-1 text-xs font-medium rounded-full';
-            }
-        }
-
-        // Student data
-        const students = [
-            {name: "ALDRIAN RONALSON TITIHERU", gender: "L", religion: "P", nisn: "0086569596", birthDate: "2008-06-21"},
-            {name: "Alfian Adi Purnomo", gender: "L", religion: "I", nisn: "0074600412", birthDate: "2007-11-12"},
-            {name: "Aprilia Elisabet Yesnat", gender: "P", religion: "P", nisn: "0074869716", birthDate: "2007-04-19"},
-            {name: "Aurilius Tian Gerardo Saputra", gender: "L", religion: "P", nisn: "0084182312", birthDate: "2008-07-27"},
-            {name: "Bryan Edward Julyanto Bukari", gender: "L", religion: "P", nisn: "0085773109", birthDate: "2008-07-14"},
-            {name: "Cici Deswita Febriani", gender: "P", religion: "I", nisn: "0087909379", birthDate: "2008-02-02"},
-            {name: "CINTA LAURA HURULEA", gender: "P", religion: "P", nisn: "0071572020", birthDate: "2007-06-25"},
-            {name: "DANIYATI", gender: "P", religion: "I", nisn: "0084706853", birthDate: "2008-02-17"},
-            {name: "Deby Debora Kemesrar", gender: "P", religion: "P", nisn: "0077862282", birthDate: "2007-12-07"},
-            {name: "DELVERO EDWADT KALAMI", gender: "L", religion: "P", nisn: "0074678081", birthDate: "2007-03-19"},
-            {name: "ELDA W. KAMESFLE", gender: "P", religion: "P", nisn: "0086951699", birthDate: "2008-09-16"},
-            {name: "FALEN PRATAMA AYGE", gender: "L", religion: "I", nisn: "0082593218", birthDate: "2008-01-08"},
-            {name: "Falensia Marissa Runtu", gender: "P", religion: "P", nisn: "0083861529", birthDate: "2008-03-04"},
-            {name: "HARRY PANCA POLSIARY", gender: "L", religion: "P", nisn: "0082383142", birthDate: "2008-06-01"},
-            {name: "Herman Gabriel Fonataba", gender: "L", religion: "P", nisn: "0076202678", birthDate: "2007-08-12"},
-            {name: "Jessie Melissa Cantika Latue", gender: "P", religion: "P", nisn: "0087163665", birthDate: "2008-08-25"},
-            {name: "JUEN FRIDA LEKAHENA", gender: "P", religion: "P", nisn: "0089030733", birthDate: "2008-07-24"},
-            {name: "JUNIOR PASKAL TAHITU", gender: "L", religion: "P", nisn: "3081721982", birthDate: "2008-06-06"},
-            {name: "KIKI KHUSNUL OKTAVIANTI", gender: "P", religion: "I", nisn: "0084883601", birthDate: "2008-10-18"},
-            {name: "MARIA FRESENDA LEWATAKA", gender: "P", religion: "P", nisn: "0075144653", birthDate: "2007-02-23"},
-            {name: "MARIA MAGDALENA SNANFI", gender: "P", religion: "P", nisn: "0068245373", birthDate: "2006-12-26"},
-            {name: "Maya Rosaida Paa", gender: "P", religion: "I", nisn: "0083549719", birthDate: "2008-03-02"},
-            {name: "MELANI STEFANNY LOIWATU", gender: "P", religion: "P", nisn: "0083620504", birthDate: "2008-09-22"},
-            {name: "MUHAMMAD FADLAN", gender: "L", religion: "I", nisn: "0088975994", birthDate: "2008-07-15"},
-            {name: "NAOMI TRESIA PAITEI", gender: "P", religion: "P", nisn: "0069826001", birthDate: "2006-09-17"},
-            {name: "NATHALIA RUMBINO", gender: "P", religion: "P", nisn: "0084346261", birthDate: "2008-12-24"},
-            {name: "Novela Jessica Ta'bilangi", gender: "P", religion: "P", nisn: "0084620689", birthDate: "2008-11-09"},
-            {name: "OLGA I. LIKLIKWATIL", gender: "P", religion: "P", nisn: "0083566510", birthDate: "2008-06-29"},
-            {name: "RACHEL MANUELA MAYOR", gender: "P", religion: "P", nisn: "0074609402", birthDate: "2007-10-25"},
-            {name: "RATNA SARI ABDULMUIN", gender: "P", religion: "I", nisn: "0073546378", birthDate: "2007-03-18"},
-            {name: "Raymond Edwin Soselisa", gender: "L", religion: "P", nisn: "0075153529", birthDate: "2007-10-31"},
-            {name: "Rizky", gender: "L", religion: "I", nisn: "0072596236", birthDate: "2007-12-20"},
-            {name: "SAMUEL.FANIK.TEHUPEIORY", gender: "L", religion: "P", nisn: "0075251376", birthDate: "2007-07-15"},
-            {name: "Tiara Arung Silambi", gender: "P", religion: "P", nisn: "0098566104", birthDate: "2009-04-08"},
-            {name: "WULAN RAHMADANI", gender: "P", religion: "I", nisn: "0083616763", birthDate: "2008-08-30"},
-            {name: "ZAINU", gender: "L", religion: "I", nisn: "0072673338", birthDate: "2007-11-23"}
-        ];
-
-        // Attendance status for each student
-        let attendance = {};
-
-        // Initialize attendance with default "Hadir" status
-        students.forEach(student => {
-            attendance[student.name] = "Hadir";
-        });
-
-        // Update date and time
-        function updateDateTime() {
-            const now = new Date();
-            // Convert to WIT - Use local browser time (no adjustment)
-            const witTime = new Date(now.getTime());
-            
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric'
-            };
-            
-            // Format time manually to ensure correct WIT display
-            const hours = String(witTime.getHours()).padStart(2, '0');
-            const minutes = String(witTime.getMinutes()).padStart(2, '0');
-            const seconds = String(witTime.getSeconds()).padStart(2, '0');
-            
-            document.getElementById('currentDate').textContent = witTime.toLocaleDateString('id-ID', options);
-            document.getElementById('currentTime').textContent = `${hours}:${minutes}:${seconds} WIT`;
-        }
-
-        // Create student card
-        function createStudentCard(student, index) {
-            const genderIcon = student.gender === 'L' ? 'fas fa-mars text-blue-500' : 'fas fa-venus text-pink-500';
-            const religionFull = student.religion === 'I' ? 'Islam' : student.religion === 'P' ? 'Protestan' : 'Katolik';
-            
-            return `
-                <div class="border border-gray-200 rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow">
-                    <div class="flex flex-col space-y-3">
-                        <div class="flex-1">
-                            <div class="flex items-start sm:items-center mb-2 flex-col sm:flex-row">
-                                <div class="flex items-center mb-1 sm:mb-0">
-                                    <span class="bg-blue-100 text-blue-800 text-xs sm:text-sm font-medium px-2 py-1 rounded mr-2 sm:mr-3 flex-shrink-0">
-                                        ${index + 1}
-                                    </span>
-                                    <h4 class="font-semibold text-gray-800 student-name text-sm sm:text-base">${student.name}</h4>
-                                    <i class="${genderIcon} ml-2 flex-shrink-0"></i>
-                                </div>
-                            </div>
-                            <div class="student-info text-xs sm:text-sm text-gray-600 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1 sm:gap-2">
-                                <span class="flex items-center"><i class="fas fa-pray mr-1 w-3"></i>${religionFull}</span>
-                                <span class="flex items-center"><i class="fas fa-id-card mr-1 w-3"></i>NISN: ${student.nisn}</span>
-                                <span class="flex items-center sm:col-span-2 lg:col-span-1"><i class="fas fa-birthday-cake mr-1 w-3"></i>${new Date(student.birthDate).toLocaleDateString('id-ID')}</span>
-                            </div>
-                        </div>
-                        <div class="status-buttons">
-                            <button onclick="setAttendance('${student.name}', 'Hadir')" 
-                                    class="status-btn px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all
-                                           ${attendance[student.name] === 'Hadir' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-green-100'}">
-                                <i class="fas fa-check mr-1"></i>Hadir
-                            </button>
-                            <button onclick="setAttendance('${student.name}', 'Sakit')" 
-                                    class="status-btn px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all
-                                           ${attendance[student.name] === 'Sakit' ? 'bg-yellow-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-yellow-100'}">
-                                <i class="fas fa-thermometer-half mr-1"></i>Sakit
-                            </button>
-                            <button onclick="setAttendance('${student.name}', 'Izin')" 
-                                    class="status-btn px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all
-                                           ${attendance[student.name] === 'Izin' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-blue-100'}">
-                                <i class="fas fa-hand-paper mr-1"></i>Izin
-                            </button>
-                            <button onclick="setAttendance('${student.name}', 'Alpa')" 
-                                    class="status-btn px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all
-                                           ${attendance[student.name] === 'Alpa' ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-red-100'}">
-                                <i class="fas fa-times mr-1"></i>Alpa
-                            </button>
-                            <button onclick="setAttendance('${student.name}', 'Bolos')" 
-                                    class="status-btn px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all
-                                           ${attendance[student.name] === 'Bolos' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-purple-100'}">
-                                <i class="fas fa-user-slash mr-1"></i>Bolos
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Set attendance status
-        function setAttendance(studentName, status) {
-            attendance[studentName] = status;
-            renderStudents();
-        }
-
-        // Mark all students as present
-        function markAllPresent() {
-            students.forEach(student => {
-                attendance[student.name] = "Hadir";
-            });
-            renderStudents();
-        }
-
-        // Render students list
-        function renderStudents() {
-            const studentsList = document.getElementById('studentsList');
-            studentsList.innerHTML = students.map((student, index) => createStudentCard(student, index)).join('');
-        }
-
-        // Submit attendance to Google Sheets
-        async function submitAttendance() {
-            const submitBtn = document.getElementById('submitBtn');
-            const successMessage = document.getElementById('successMessage');
-            const errorMessage = document.getElementById('errorMessage');
-            
-            // Hide previous messages
-            successMessage.classList.add('hidden');
-            errorMessage.classList.add('hidden');
-            
-            // Show loading state
-            submitBtn.innerHTML = '<i class="fas fa-spinner loading mr-2"></i>Mengirim...';
-            submitBtn.disabled = true;
-            
-            try {
-                const now = new Date();
-                // Use local browser time (no adjustment)
-                const witTime = new Date(now.getTime());
-                const date = witTime.toLocaleDateString('id-ID');
-                
-                // Format time manually for WIT
-                const hours = String(witTime.getHours()).padStart(2, '0');
-                const minutes = String(witTime.getMinutes()).padStart(2, '0');
-                const seconds = String(witTime.getSeconds()).padStart(2, '0');
-                const time = `${hours}:${minutes}:${seconds} WIT`;
-                
-                // Check if date and schedule are selected
-                if (!selectedDate) {
-                    errorMessage.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i><span class="block sm:inline">Silakan pilih tanggal absensi terlebih dahulu!</span>';
-                    errorMessage.classList.remove('hidden');
-                    errorMessage.scrollIntoView({ behavior: 'smooth' });
-                    return;
-                }
-                
-                if (!currentSchedule) {
-                    errorMessage.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i><span class="block sm:inline">Silakan pilih jadwal pelajaran terlebih dahulu!</span>';
-                    errorMessage.classList.remove('hidden');
-                    errorMessage.scrollIntoView({ behavior: 'smooth' });
-                    return;
-                }
-                
-                // Prepare data for Google Sheets
-                const attendanceData = {
-                    selectedDate: selectedDate,
-                    currentDate: date,
-                    time: time,
-                    schedule: currentSchedule,
-                    attendance: attendance
-                };
-                
-                // Replace with your Google Apps Script Web App URL
-                const scriptURL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
-                
-                const response = await fetch(scriptURL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(attendanceData)
-                });
-                
-                if (response.ok) {
-                    successMessage.classList.remove('hidden');
-                    successMessage.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    throw new Error('Network response was not ok');
-                }
-                
-            } catch (error) {
-                console.error('Error:', error);
-                errorMessage.classList.remove('hidden');
-                errorMessage.scrollIntoView({ behavior: 'smooth' });
-            } finally {
-                // Reset button
-                submitBtn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Kirim Absensi';
-                submitBtn.disabled = false;
-            }
-        }
-
-        // Calculate and update class statistics
-        function updateClassStatistics() {
-            const maleCount = students.filter(student => student.gender === 'L').length;
-            const femaleCount = students.filter(student => student.gender === 'P').length;
-            const totalCount = students.length;
-            
-            const islamMaleCount = students.filter(student => student.religion === 'I' && student.gender === 'L').length;
-            const islamFemaleCount = students.filter(student => student.religion === 'I' && student.gender === 'P').length;
-            const islamTotalCount = students.filter(student => student.religion === 'I').length;
-            
-            const protestantMaleCount = students.filter(student => student.religion === 'P' && student.gender === 'L').length;
-            const protestantFemaleCount = students.filter(student => student.religion === 'P' && student.gender === 'P').length;
-            const protestantTotalCount = students.filter(student => student.religion === 'P').length;
-            
-            document.getElementById('maleCount').textContent = maleCount;
-            document.getElementById('femaleCount').textContent = femaleCount;
-            document.getElementById('totalCount').textContent = totalCount;
-            document.getElementById('islamTotalCount').textContent = islamTotalCount;
-            document.getElementById('islamMaleCount').textContent = islamMaleCount;
-            document.getElementById('islamFemaleCount').textContent = islamFemaleCount;
-            document.getElementById('protestantTotalCount').textContent = protestantTotalCount;
-            document.getElementById('protestantMaleCount').textContent = protestantMaleCount;
-            document.getElementById('protestantFemaleCount').textContent = protestantFemaleCount;
-        }
-
-        // Initialize the application
-        function init() {
-            updateDateTime();
-            renderStudents();
-            updateClassStatistics();
-            
-            // Set today's date as default
-            setToday();
-            
-            // Update time every second
-            setInterval(updateDateTime, 1000);
-        }
-
-        // Start the application when page loads
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e7c5e2e6ba8e13',t:'MTc1NTA4MzUwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9721df08f08e5ff7',t:'MTc1NTY5MjcwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
