@@ -370,6 +370,11 @@
                   <tr class="th-sticky border-b">
                     <th class="text-left px-4 py-3 font-semibold text-gray-700">No.</th>
                     <th class="text-left px-4 py-3 font-semibold text-gray-700">Nama Lengkap</th>
+                    <th class="text-center px-4 py-3 font-semibold text-gray-700">Hadir</th>
+                    <th class="text-center px-4 py-3 font-semibold text-gray-700">Sakit</th>
+                    <th class="text-center px-4 py-3 font-semibold text-gray-700">Izin</th>
+                    <th class="text-center px-4 py-3 font-semibold text-gray-700">Alpa</th>
+                    <th class="text-center px-4 py-3 font-semibold text-gray-700">Bolos</th>
                     <th class="text-center px-4 py-3 font-semibold text-gray-700">Pertemuan</th>
                   </tr>
                 </thead>
@@ -444,6 +449,11 @@
                   <tr class="th-sticky border-b">
                     <th class="text-left px-4 py-3 font-semibold text-gray-700">No.</th>
                     <th class="text-left px-4 py-3 font-semibold text-gray-700">Nama Lengkap</th>
+                    <th class="text-center px-4 py-3 font-semibold text-gray-700">Hadir</th>
+                    <th class="text-center px-4 py-3 font-semibold text-gray-700">Sakit</th>
+                    <th class="text-center px-4 py-3 font-semibold text-gray-700">Izin</th>
+                    <th class="text-center px-4 py-3 font-semibold text-gray-700">Alpa</th>
+                    <th class="text-center px-4 py-3 font-semibold text-gray-700">Bolos</th>
                     <th class="text-center px-4 py-3 font-semibold text-gray-700">Pertemuan</th>
                   </tr>
                 </thead>
@@ -1099,21 +1109,43 @@
     }
 
     function aggregatePerNamaSem() {
-      const map = new Map();
-      const statuses = ['Hadir','Sakit','Izin','Alpa','Bolos'];
+      // Kumpulkan status per (nama, tanggal)
+      const byNameDate = new Map(); // key: nama|tanggal -> flags
       filteredRowsSem.forEach(r => {
-        const nama = r['Nama Lengkap'] || '(Tanpa Nama)';
-        const st = r['Keterangan'] || '';
-        if (!map.has(nama)) map.set(nama, { Nama:nama, Hadir:0,Sakit:0,Izin:0,Alpa:0,Bolos:0, Total:0 });
-        const item = map.get(nama);
-        if (statuses.includes(st)) item[st] += 1;
-        item.Total += 1;
+        const nama = (r['Nama Lengkap'] || '(Tanpa Nama)').trim();
+        const tanggal = (r['Tanggal'] || '').trim();
+        const st = (r['Keterangan'] || '').trim();
+        if (!nama || !tanggal) return;
+        const key = `${nama}|${tanggal}`;
+        if (!byNameDate.has(key)) byNameDate.set(key, { nama, tanggal, hasHadir:false, hasIzin:false, hasSakit:false, hasAlpa:false, hasBolos:false });
+        const m = byNameDate.get(key);
+        if (st === 'Hadir') m.hasHadir = true;
+        else if (st === 'Izin') m.hasIzin = true;
+        else if (st === 'Sakit') m.hasSakit = true;
+        else if (st === 'Alpa') m.hasAlpa = true;
+        else if (st === 'Bolos') m.hasBolos = true;
       });
-      rekapPerNamaSem = Array.from(map.values()).sort((a,b)=> a.Nama.localeCompare(b.Nama,'id'));
+
+      // Agregasi per nama berdasar prioritas harian: Bolos > Sakit > Alpa > Hadir > Izin
+      const byName = new Map();
+      byNameDate.forEach(m => {
+        if (!byName.has(m.nama)) byName.set(m.nama, { Nama:m.nama, Hadir:0, Sakit:0, Izin:0, Alpa:0, Bolos:0, Pertemuan:0 });
+        const agg = byName.get(m.nama);
+        agg.Pertemuan += 1; // satu pertemuan per hari apa pun jumlah jamnya
+        let finalSt = 'Izin';
+        if (m.hasBolos) finalSt = 'Bolos';
+        else if (m.hasSakit) finalSt = 'Sakit';
+        else if (m.hasAlpa) finalSt = 'Alpa';
+        else if (m.hasHadir) finalSt = 'Hadir';
+        else if (m.hasIzin) finalSt = 'Izin';
+        agg[finalSt] += 1;
+      });
+
+      rekapPerNamaSem = Array.from(byName.values()).sort((a,b)=> a.Nama.localeCompare(b.Nama,'id'));
     }
 
     function renderSummarySem() {
-      document.getElementById('sumTotalSem').textContent = filteredRowsSem.length;
+      document.getElementById('sumTotalSem').textContent = filteredRowsSem.reduce((set, r)=>{ const k=(r['Nama Lengkap']||'')+'|'+(r['Tanggal']||''); set.add(k); return set; }, new Set()).size;
     }
 
     function renderRekapTableSem() {
@@ -1122,16 +1154,21 @@
         <tr class="hover:bg-slate-50">
           <td class="px-4 py-3 text-gray-700">${i+1}</td>
           <td class="px-4 py-3 font-semibold text-gray-800">${r.Nama}</td>
-          <td class="px-4 py-3 text-center font-bold text-gray-900">${r.Total}</td>
+          <td class="px-4 py-3 text-center">${r.Hadir}</td>
+          <td class="px-4 py-3 text-center">${r.Sakit}</td>
+          <td class="px-4 py-3 text-center">${r.Izin}</td>
+          <td class="px-4 py-3 text-center">${r.Alpa}</td>
+          <td class="px-4 py-3 text-center">${r.Bolos}</td>
+          <td class="px-4 py-3 text-center font-bold text-gray-900">${r.Pertemuan}</td>
         </tr>
       `).join('');
     }
 
     function exportRekapCSVSem() {
-      const header = ['No.','Nama Lengkap','Pertemuan'];
+      const header = ['No.','Nama Lengkap','Hadir','Sakit','Izin','Alpa','Bolos','Pertemuan'];
       const lines = [header.join(',')];
       rekapPerNamaSem.forEach((r, i) => {
-        const row = [i+1, r.Nama, r.Total]
+        const row = [i+1, r.Nama, r.Hadir, r.Sakit, r.Izin, r.Alpa, r.Bolos, r.Pertemuan]
           .map(v => {
             const s = String(v ?? '');
             return (s.includes(',') || s.includes('"') || s.includes('\n')) ? '"' + s.replace(/"/g,'""') + '"' : s;
@@ -1142,7 +1179,7 @@
       const blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8;'});
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url; a.download = 'rekap_pertemuan_per_nama_semester.csv';
+      a.href = url; a.download = 'rekap_semester_per_nama.csv';
       document.body.appendChild(a); a.click();
       a.remove(); URL.revokeObjectURL(url);
     }
@@ -1390,5 +1427,5 @@
       loadData();
     });
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9722ddd5769b5f6f',t:'MTc1NTcwMzE0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9722f5f4e30899a9',t:'MTc1NTcwNDEyOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
