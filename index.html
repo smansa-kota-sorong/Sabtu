@@ -123,20 +123,22 @@
             </button>
           </div>
         </div>
-        <div class="mt-4 flex items-center gap-2 sm:gap-3 flex-wrap justify-start">
-          <button id="tabAbsensi" class="nav-tab active px-5 py-2.5 rounded-full font-bold text-sm tracking-wide" onclick="switchTab('absen')">
-            <i class="fa-solid fa-clipboard-check mr-2"></i>Absen
-          </button>
-          <button id="tabRekapan" class="nav-tab px-5 py-2.5 rounded-full font-bold text-sm tracking-wide" onclick="goToRekapan()">
-            <i class="fa-solid fa-chart-pie mr-2"></i>Rekapan
-          </button>
-          <button id="tabRekapSemester" class="nav-tab px-5 py-2.5 rounded-full font-bold text-sm tracking-wide" onclick="switchTab('rekapSemester')">
-            <i class="fa-solid fa-calendar-days mr-2"></i>Rekapan Semester
-          </button>
-          <button id="tabEditAbsensi" class="nav-tab px-5 py-2.5 rounded-full font-bold text-sm tracking-wide" onclick="switchTab('edit')">
-            <i class="fa-solid fa-pen-to-square mr-2"></i>Edit Absensi
-          </button>
-          <span class="ml-auto text-xs text-indigo-100 sm:hidden" id="clockMini"></span>
+        <div class="mt-4 sm:mt-4">
+          <div class="sm:hidden mb-2 text-indigo-100 text-sm font-semibold" id="mobileClock"></div>
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap justify-start">
+            <button id="tabAbsensi" class="nav-tab active px-5 py-2.5 rounded-full font-bold text-sm tracking-wide" onclick="switchTab('absen')">
+              <i class="fa-solid fa-clipboard-check mr-2"></i>Absen
+            </button>
+            <button id="tabRekapan" class="nav-tab px-5 py-2.5 rounded-full font-bold text-sm tracking-wide" onclick="goToRekapan()">
+              <i class="fa-solid fa-chart-pie mr-2"></i>Rekapan
+            </button>
+            <button id="tabRekapSemester" class="nav-tab px-5 py-2.5 rounded-full font-bold text-sm tracking-wide" onclick="switchTab('rekapSemester')">
+              <i class="fa-solid fa-calendar-days mr-2"></i>Rekapan Semester
+            </button>
+            <button id="tabEditAbsensi" class="nav-tab px-5 py-2.5 rounded-full font-bold text-sm tracking-wide" onclick="switchTab('edit')">
+              <i class="fa-solid fa-pen-to-square mr-2"></i>Edit Absensi
+            </button>
+          </div>
         </div>
       </div>
     </header>
@@ -703,6 +705,7 @@
       if (dateEl) dateEl.textContent = dateStr;
       if (timeEl) timeEl.textContent = timeStr;
       const mini = document.getElementById('clockMini'); if (mini) mini.textContent = `${dateStr} ${timeStr}`;
+      const mobileClock = document.getElementById('mobileClock'); if (mobileClock) mobileClock.textContent = `${dateStr} • ${timeStr}`;
     }
 
     // ================== Tabs & Navigation ==================
@@ -1427,5 +1430,5 @@
       loadData();
     });
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9722f5f4e30899a9',t:'MTc1NTcwNDEyOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9723184663cdf92e',t:'MTc1NTcwNTUzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
