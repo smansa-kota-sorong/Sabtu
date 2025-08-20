@@ -128,7 +128,10 @@
             <i class="fa-solid fa-chart-pie mr-2"></i>Rekapan
           </button>
           <button id="tabRekapSemester" class="nav-tab px-4 py-2 rounded-lg font-semibold text-sm" onclick="switchTab('rekapSemester')">
-            <i class="fa-solid fa-calendar-range mr-2"></i>Rekapan Semester
+            <i class="fa-solid fa-calendar-days mr-2"></i>Rekapan Semester
+          </button>
+          <button id="tabEditAbsensi" class="nav-tab px-4 py-2 rounded-lg font-semibold text-sm" onclick="switchTab('edit')">
+            <i class="fa-solid fa-pen-to-square mr-2"></i>Edit Absensi
           </button>
           <span class="ml-auto text-xs text-indigo-100 sm:hidden" id="clockMini"></span>
         </div>
@@ -150,7 +153,10 @@
                     <i class="fa-solid fa-chart-pie mr-2"></i>Rekapan
                   </button>
                   <button onclick="switchTab('rekapSemester')" class="btn bg-indigo-700 hover:bg-indigo-800 text-white px-4 py-2 rounded-lg text-sm font-semibold">
-                    <i class="fa-solid fa-calendar-range mr-2"></i>Rekapan Semester
+                    <i class="fa-solid fa-calendar-days mr-2"></i>Rekapan Semester
+                  </button>
+                  <button onclick="switchTab('edit')" class="btn bg-slate-700 hover:bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-semibold">
+                    <i class="fa-solid fa-pen-to-square mr-2"></i>Edit Absensi
                   </button>
                 </div>
               </div>
@@ -219,23 +225,6 @@
                 </p>
               </div>
             </div>
-          </div>
-
-          <div id="duplicateWarning" class="hidden mt-5 p-3 rounded-lg border bg-amber-50 border-amber-300 text-amber-800 flex items-start gap-3">
-            <i class="fa-solid fa-triangle-exclamation mt-0.5"></i>
-            <div>
-              <div class="font-semibold">Sudah ada kiriman untuk tanggal dan jam ini.</div>
-              <div class="text-sm">Silakan ganti tanggal atau jam. Kiriman ganda tidak diperbolehkan.</div>
-            </div>
-          </div>
-
-          <!-- Catatan -->
-          <div class="mt-5">
-            <label class="block text-sm font-semibold text-gray-700 mb-2">
-              <i class="fa-regular fa-note-sticky text-amber-600 mr-2"></i>Keterangan umum (opsional)
-            </label>
-            <textarea id="note" rows="2" placeholder="Contoh: Ulangan, kegiatan sekolah, dll."
-                      class="w-full rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-400 focus:outline-none p-3 text-gray-700"></textarea>
           </div>
         </section>
 
@@ -409,7 +398,7 @@
           <section class="card rounded-2xl p-5 sm:p-7 mb-6">
             <div class="flex items-center justify-between gap-4 flex-wrap mb-4">
               <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
-                <i class="fa-solid fa-calendar-range text-indigo-600"></i> Filter Rekap Semester
+                <i class="fa-solid fa-calendar-days text-indigo-600"></i> Filter Rekap Semester
               </h2>
               <div class="flex items-center gap-2">
                 <button id="refreshBtnSem" class="btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-semibold text-sm">
@@ -507,6 +496,81 @@
           </section>
         </div>
       </section>
+
+      <!-- SECTION: EDIT ABSENSI (Demo) -->
+      <section id="sectionEdit" class="hidden-section app-bg-2 rounded-2xl p-0">
+        <div class="p-5 sm:p-7">
+          <section class="card rounded-2xl p-5 sm:p-7 mb-6">
+            <div class="flex items-center justify-between gap-4 flex-wrap mb-4">
+              <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                <i class="fa-solid fa-pen-to-square text-indigo-600"></i> Edit Absensi
+                <span class="ml-2 text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Demo</span>
+              </h2>
+              <div class="flex items-center gap-2">
+                <button id="saveEditsBtn" class="btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-semibold text-sm">
+                  <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Perubahan (Demo)
+                </button>
+                <button id="exportEditsBtn" class="btn bg-slate-700 hover:bg-slate-800 text-white px-4 py-2 rounded-lg font-semibold text-sm">
+                  <i class="fa-solid fa-file-arrow-down mr-1"></i> Unduh CSV Perubahan
+                </button>
+              </div>
+            </div>
+
+            <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
+              <div>
+                <label class="text-sm font-semibold text-gray-700 mb-2 block">Tanggal</label>
+                <input id="editDate" type="date" class="w-full rounded-lg border border-indigo-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none p-2.5 text-gray-700">
+              </div>
+              <div>
+                <label class="text-sm font-semibold text-gray-700 mb-2 block">Jam ke / Bimbel</label>
+                <select id="jamFilterEdit" class="w-full rounded-lg border border-indigo-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none p-2.5 text-gray-700">
+                  <option value="">Semua</option>
+                </select>
+              </div>
+              <div class="md:col-span-2">
+                <label class="text-sm font-semibold text-gray-700 mb-2 block">Cari Nama</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-indigo-500"><i class="fa-solid fa-magnifying-glass"></i></span>
+                  <input id="searchNameEdit" type="text" placeholder="Ketik sebagian nama..." class="w-full pl-10 rounded-lg border border-indigo-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none p-2.5 text-gray-700">
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 text-sm text-gray-600">
+              Menampilkan <span id="matchCountEdit" class="font-semibold text-indigo-700">0</span> baris untuk tanggal dan pilihan di atas.
+            </div>
+            <div class="mt-3 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded p-2">
+              Perubahan akan tersimpan sebagai contoh (Demo). Hubungi saya untuk menyambungkan ke Web App agar pembaruan dilakukan ke Google Sheets.
+            </div>
+          </section>
+
+          <section class="card rounded-2xl p-5 sm:p-7">
+            <div class="table-wrap border rounded-xl">
+              <table class="min-w-full text-sm">
+                <thead>
+                  <tr class="th-sticky border-b">
+                    <th class="text-left px-4 py-3 font-semibold text-gray-700">No.</th>
+                    <th class="text-left px-4 py-3 font-semibold text-gray-700">Nama Lengkap</th>
+                    <th class="text-left px-4 py-3 font-semibold text-gray-700">Jam ke</th>
+                    <th class="text-left px-4 py-3 font-semibold text-gray-700">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="editBody" class="divide-y"></tbody>
+              </table>
+            </div>
+
+            <div id="editSaveMessage" class="hidden mt-4 p-3 rounded-lg border bg-emerald-50 border-emerald-300 text-emerald-800">
+              <i class="fa-solid fa-circle-check mr-1"></i> Perubahan tersimpan (Demo). Kirim endpoint jika ingin tersambung ke Google Sheets sungguhan.
+            </div>
+            <div id="editErrorMessage" class="hidden mt-4 p-3 rounded-lg border bg-rose-50 border-rose-300 text-rose-800">
+              <i class="fa-solid fa-triangle-exclamation mr-1"></i> Gagal menyimpan (Demo). Coba lagi atau cek koneksi.
+            </div>
+            <div id="emptyBoxEdit" class="hidden mt-4 p-3 rounded-lg border bg-amber-50 border-amber-300 text-amber-800">
+              Tidak ada data sesuai filter.
+            </div>
+          </section>
+        </div>
+      </section>
     </main>
 
     <footer class="text-center text-gray-600 py-10">
@@ -518,10 +582,7 @@
     // ================== Konfigurasi ==================
     const scriptURL = 'https://script.google.com/macros/s/AKfycbzSP_Qfg4KSRP9yj2_EuZDqDgmWnEFbxRfZIarCIWEs5mmWaxZBqZzLB7saYWaunKRK/exec';
     const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQOMwwK9rdcEfJ_vQvYMRZmTJMLsSyDvOVn5c-DU-Id4HDkwSzdTChFUqMrWH69WNwhtfqkilp8ZgrS/pub?gid=1872719135&single=true&output=csv';
-
-    // Ganti ini ke link CSV sheet "Login" kamu (Publish to web -> CSV).
-    let LOGIN_CSV_URL = ''; 
-    // ================================================
+    let LOGIN_CSV_URL = '';
 
     // ================== Gate (Pilih Petugas) ==================
     const gateScreen = document.getElementById('gateScreen');
@@ -604,6 +665,7 @@
           loginRows = parseCSV(text).map(normLoginRow).filter(r => (r['Username']||'').trim() !== '');
           gateInfo.innerHTML = 'Daftar petugas berhasil dimuat.';
         }
+
         userSelect.innerHTML = '<option value="">-- Pilih nama --</option>' +
           loginRows.map((r,i)=>`<option value="${i}">${r['Username']}</option>`).join('');
       } catch(e){
@@ -671,21 +733,27 @@
       const absenBtn = document.getElementById('tabAbsensi');
       const rekapBtn = document.getElementById('tabRekapan');
       const semBtn = document.getElementById('tabRekapSemester');
+      const editBtn = document.getElementById('tabEditAbsensi');
+
       const absen = document.getElementById('sectionAbsen');
       const rekap = document.getElementById('sectionRekap');
       const rekapSem = document.getElementById('sectionRekapSemester');
+      const edit = document.getElementById('sectionEdit');
 
       const setActive = (btn, on) => { if (!btn) return; btn.classList.toggle('active', !!on); };
 
       if (which === 'absen'){
-        setActive(absenBtn, true); setActive(rekapBtn, false); setActive(semBtn, false);
-        absen.classList.remove('hidden-section'); rekap.classList.add('hidden-section'); rekapSem.classList.add('hidden-section');
+        setActive(absenBtn, true); setActive(rekapBtn, false); setActive(semBtn, false); setActive(editBtn, false);
+        absen.classList.remove('hidden-section'); rekap.classList.add('hidden-section'); rekapSem.classList.add('hidden-section'); edit.classList.add('hidden-section');
       } else if (which === 'rekap'){
-        setActive(absenBtn, false); setActive(rekapBtn, true); setActive(semBtn, false);
-        rekap.classList.remove('hidden-section'); absen.classList.add('hidden-section'); rekapSem.classList.add('hidden-section');
-      } else {
-        setActive(absenBtn, false); setActive(rekapBtn, false); setActive(semBtn, true);
-        rekapSem.classList.remove('hidden-section'); absen.classList.add('hidden-section'); rekap.classList.add('hidden-section');
+        setActive(absenBtn, false); setActive(rekapBtn, true); setActive(semBtn, false); setActive(editBtn, false);
+        rekap.classList.remove('hidden-section'); absen.classList.add('hidden-section'); rekapSem.classList.add('hidden-section'); edit.classList.add('hidden-section');
+      } else if (which === 'rekapSemester'){
+        setActive(absenBtn, false); setActive(rekapBtn, false); setActive(semBtn, true); setActive(editBtn, false);
+        rekapSem.classList.remove('hidden-section'); absen.classList.add('hidden-section'); rekap.classList.add('hidden-section'); edit.classList.add('hidden-section');
+      } else if (which === 'edit'){
+        setActive(absenBtn, false); setActive(rekapBtn, false); setActive(semBtn, false); setActive(editBtn, true);
+        edit.classList.remove('hidden-section'); absen.classList.add('hidden-section'); rekap.classList.add('hidden-section'); rekapSem.classList.add('hidden-section');
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -867,7 +935,7 @@
       const dup = document.getElementById('duplicateWarning');
 
       ok.classList.add('hidden'); err.classList.add('hidden'); err.textContent = '';
-      dup.classList.add('hidden');
+      if (dup) dup.classList.add('hidden');
 
       if (!scriptURL || scriptURL.includes('PASTE_YOUR_WEB_APP_URL_HERE')) {
         err.innerHTML = '<i class="fa-solid fa-circle-exclamation mr-2"></i>URL Web App belum diisi.';
@@ -880,11 +948,11 @@
         err.innerHTML = '<i class="fa-solid fa-circle-exclamation mr-2"></i>Pilih Jam ke / Bimbel dahulu.'; err.classList.remove('hidden'); err.scrollIntoView({behavior:'smooth'}); return;
       }
 
+      // Cegah kiriman ganda (per perangkat)
       const pairKey = `${selectedDate}__${currentSchedule}`;
       const sentPairs = JSON.parse(localStorage.getItem('sentPairs')||'[]');
       if (sentPairs.includes(pairKey)){
-        dup.classList.remove('hidden');
-        dup.scrollIntoView({behavior:'smooth'});
+        if (dup){ dup.classList.remove('hidden'); dup.scrollIntoView({behavior:'smooth'}); }
         return;
       }
 
@@ -896,7 +964,7 @@
           schedule: currentSchedule,
           attendance,
           students,
-          note: (document.getElementById('note').value || '').trim(),
+          note: '', // dikosongkan karena kolom catatan dihapus dari UI
           user: currentUser ? { name: currentUser.Username, role: currentUser.Role } : null
         };
 
@@ -952,8 +1020,11 @@
       const jams = Array.from(new Set(list.map(r => r['Jam ke']).filter(Boolean))).sort((a,b)=>a.localeCompare(b, 'id'));
       const sel1 = document.getElementById('jamFilter');
       const sel2 = document.getElementById('jamFilterSem');
-      if (sel1) sel1.innerHTML = '<option value="">Semua</option>' + jams.map(j => `<option>${j}</option>`).join('');
-      if (sel2) sel2.innerHTML = '<option value="">Semua</option>' + jams.map(j => `<option>${j}</option>`).join('');
+      const sel3 = document.getElementById('jamFilterEdit');
+      const html = '<option value="">Semua</option>' + jams.map(j => `<option>${j}</option>`).join('');
+      if (sel1) sel1.innerHTML = html;
+      if (sel2) sel2.innerHTML = html;
+      if (sel3) sel3.innerHTML = html;
     }
 
     function applyFilters() {
@@ -1130,6 +1201,141 @@
       a.remove(); URL.revokeObjectURL(url);
     }
 
+    // ================== Edit Absensi (Demo) ==================
+    let filteredRowsEdit = [];
+    let editRows = [];
+    const edits = {}; // key: 'Tanggal|Jam ke|Nama' => newStatus
+
+    function makeKey(r){
+      return `${r['Tanggal']||''}|${r['Jam ke']||''}|${r['Nama Lengkap']||''}`;
+    }
+    function currentStatusFor(r){
+      const key = makeKey(r);
+      return edits[key] ?? (r['Keterangan'] || '');
+    }
+
+    function applyEditFilters(){
+      const d = document.getElementById('editDate').value;
+      const jam = document.getElementById('jamFilterEdit').value;
+      const q = (document.getElementById('searchNameEdit').value || '').toLowerCase().trim();
+
+      editRows = rawRows.filter(r => {
+        if (d && (r['Tanggal'] || '') !== d) return false;
+        if (jam && (r['Jam ke'] || '') !== jam) return false;
+        if (q && !(r['Nama Lengkap'] || '').toLowerCase().includes(q)) return false;
+        return true;
+      });
+
+      document.getElementById('matchCountEdit').textContent = editRows.length.toString();
+      renderEditTable();
+      document.getElementById('emptyBoxEdit').classList.toggle('hidden', editRows.length !== 0);
+    }
+
+    function setEditStatus(key, status){
+      edits[key] = status;
+      renderEditTable();
+    }
+
+    function renderEditTable(){
+      const tb = document.getElementById('editBody');
+      const statuses = ['Hadir','Sakit','Izin','Alpa','Bolos'];
+      tb.innerHTML = editRows.map((r, i) => {
+        const cur = currentStatusFor(r);
+        const key = makeKey(r);
+        const buttons = statuses.map(st => {
+          const active = cur === st;
+          const base = 'px-2.5 py-1 rounded-lg text-xs font-semibold';
+          const activeCls = {
+            'Hadir':'bg-emerald-600 text-white',
+            'Sakit':'bg-amber-600 text-white',
+            'Izin':'bg-indigo-600 text-white',
+            'Alpa':'bg-rose-600 text-white',
+            'Bolos':'bg-fuchsia-600 text-white'
+          }[st] || 'bg-gray-200 text-gray-800';
+          const inactiveCls = 'bg-gray-100 text-gray-700 hover:bg-gray-200';
+          return `<button class="${base} ${active ? activeCls : inactiveCls}" onclick="setEditStatus('${key}','${st}')">${st}</button>`;
+        }).join(' ');
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-3 text-gray-700">${i+1}</td>
+            <td class="px-4 py-3 font-semibold text-gray-800">${r['Nama Lengkap'] || ''}</td>
+            <td class="px-4 py-3 text-gray-700">${r['Jam ke'] || '-'}</td>
+            <td class="px-4 py-3"><div class="flex flex-wrap gap-2">${buttons}</div></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function saveEditsDemo(){
+      const changes = [];
+      const set = new Set(Object.keys(edits));
+      editRows.forEach(r => {
+        const key = makeKey(r);
+        if (!set.has(key)) return;
+        const before = r['Keterangan'] || '';
+        const after = edits[key];
+        if (after && after !== before){
+          changes.push({
+            tanggal: r['Tanggal'] || '',
+            jam: r['Jam ke'] || '',
+            nama: r['Nama Lengkap'] || '',
+            dari: before,
+            ke: after
+          });
+        }
+      });
+
+      const ok = document.getElementById('editSaveMessage');
+      const err = document.getElementById('editErrorMessage');
+      ok.classList.add('hidden'); err.classList.add('hidden');
+
+      if (changes.length === 0){
+        ok.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> Tidak ada perubahan baru.';
+        ok.classList.remove('hidden');
+        ok.scrollIntoView({behavior:'smooth'});
+        return;
+      }
+
+      // Demo kirim
+      fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ type:'edit', items: changes })
+      }).then(()=>{
+        ok.classList.remove('hidden');
+        ok.scrollIntoView({behavior:'smooth'});
+      }).catch(()=>{
+        err.classList.remove('hidden');
+        err.scrollIntoView({behavior:'smooth'});
+      });
+    }
+
+    function exportEditsCSV(){
+      const lines = ['Tanggal,Jam ke,Nama Lengkap,Sebelum,Setelah'];
+      const set = new Set(Object.keys(edits));
+      editRows.forEach(r => {
+        const key = makeKey(r);
+        if (!set.has(key)) return;
+        const before = r['Keterangan'] || '';
+        const after = edits[key] || '';
+        if (after && after !== before){
+          const vals = [r['Tanggal']||'', r['Jam ke']||'', r['Nama Lengkap']||'', before, after]
+            .map(v => {
+              const s = String(v ?? '');
+              return (s.includes(',') || s.includes('"') || s.includes('\n')) ? '"' + s.replace(/"/g,'""') + '"' : s;
+            });
+          lines.push(vals.join(','));
+        }
+      });
+      const blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'perubahan_absensi.csv';
+      document.body.appendChild(a); a.click();
+      a.remove(); URL.revokeObjectURL(url);
+    }
+
     // ================== Load Data (shared) ==================
     async function loadData() {
       const loading1 = document.getElementById('loadingBox');
@@ -1140,12 +1346,12 @@
       const err2 = document.getElementById('errorBoxSem');
       const empty2 = document.getElementById('emptyBoxSem');
 
-      if (loading1) loading1.classList.remove('hidden');
-      if (loading2) loading2.classList.remove('hidden');
-      if (err1) err1.classList.add('hidden'); if (empty1) empty1.classList.add('hidden');
-      if (err2) err2.classList.add('hidden'); if (empty2) empty2.classList.add('hidden');
-
       try {
+        if (loading1) loading1.classList.remove('hidden');
+        if (loading2) loading2.classList.remove('hidden');
+        if (err1) err1.classList.add('hidden'); if (empty1) empty1.classList.add('hidden');
+        if (err2) err2.classList.add('hidden'); if (empty2) empty2.classList.add('hidden');
+
         const res = await fetch(CSV_URL, { cache: 'no-store' });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const text = await res.text();
@@ -1167,8 +1373,13 @@
           if (eInput && !eInput.value) eInput.value = dates[dates.length-1];
         }
 
+        // Set default tanggal edit (terbaru)
+        const editDateInput = document.getElementById('editDate');
+        if (dates.length && editDateInput && !editDateInput.value) editDateInput.value = dates[dates.length-1];
+
         applyFilters();
         applySemesterFilters();
+        applyEditFilters();
 
         if (loading1) loading1.classList.add('hidden');
         if (loading2) loading2.classList.add('hidden');
@@ -1231,8 +1442,18 @@
       document.getElementById('refreshBtnSem').addEventListener('click', loadData);
       document.getElementById('exportBtnSem').addEventListener('click', exportRekapCSVSem);
 
+      // Edit Absensi events
+      document.getElementById('editDate').addEventListener('change', applyEditFilters);
+      document.getElementById('jamFilterEdit').addEventListener('change', applyEditFilters);
+      document.getElementById('searchNameEdit').addEventListener('input', () => {
+        clearTimeout(window.__searchTimer3);
+        window.__searchTimer3 = setTimeout(applyEditFilters, 200);
+      });
+      document.getElementById('saveEditsBtn').addEventListener('click', saveEditsDemo);
+      document.getElementById('exportEditsBtn').addEventListener('click', exportEditsCSV);
+
       loadData();
     });
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9721df08f08e5ff7',t:'MTc1NTY5MjcwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9722b3023499409e',t:'MTc1NTcwMTM4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
